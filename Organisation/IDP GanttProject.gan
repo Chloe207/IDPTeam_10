@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="IDPTeam10" company="Team 10 " webLink="" view-date="2018-10-03" view-index="0" gantt-divider-location="315" resource-divider-location="300" version="2.0">
+    <description><![CDATA[IDP Timetable]]></description>
+    <view zooming-state="default:1"/>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <calendar id="1" name="default">
+                <default-week sun="0" mon="0" tue="0" wed="0" thu="0" fri="0" sat="0"/>
+                <overriden-day-types/>
+                <days/>
+            </calendar>
+        </day-types>
+    </calendars>
+    <tasks color="#8cb6ce">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="173" name="Initial Planning: Organisation/task clarification" color="#8cb6ce" meeting="false" start="2018-10-04" duration="1" complete="0" priority="1" expand="true"/>
+        <task id="157" name="Initial Presentation" color="#8cb6ce" meeting="false" start="2018-10-05" duration="4" complete="0" priority="1" expand="true">
+            <task id="159" name="Overall plans and strategy" color="#8cb6ce" meeting="false" start="2018-10-05" duration="4" complete="0" priority="1" expand="false"/>
+            <task id="161" name="Mechanical design" color="#8cce8f" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-05" duration="4" complete="0" priority="1" expand="false"/>
+            <task id="163" name="Electrical Design" color="#d6d770" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-05" duration="4" complete="0" priority="1" expand="false"/>
+            <task id="165" name="Software Layout" color="#c05752" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-05" duration="4" complete="0" priority="1" expand="false"/>
+            <task id="167" name="Time allocation" color="#8cb6ce" meeting="false" start="2018-10-05" duration="1" complete="0" priority="1" expand="false"/>
+        </task>
+        <task id="113" name="First report" color="#8cb6ce" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="true">
+            <task id="115" name="Whole team" color="#8cb6ce" meeting="false" start="2018-10-09" duration="2" complete="0" priority="1" expand="true">
+                <task id="117" name="Problem Statement" color="#8cb6ce" meeting="false" start="2018-10-09" duration="2" complete="0" priority="1" expand="false"/>
+                <task id="119" name="Requirement Specification" color="#8cb6ce" meeting="false" start="2018-10-09" duration="1" complete="0" priority="1" expand="false"/>
+            </task>
+            <task id="121" name="Mechanical" color="#8cb6ce" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="true">
+                <task id="123" name="Drawings" color="#8cce8f" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="false"/>
+                <task id="125" name="Calculations" color="#8cce8f" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="false"/>
+                <task id="127" name="Initial BoM" color="#8cce8f" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-11" duration="1" complete="0" priority="1" expand="false"/>
+            </task>
+            <task id="129" name="Electrical" color="#8cb6ce" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="true">
+                <task id="131" name="Initial Experiments" color="#cfe37e" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-09" duration="2" complete="0" priority="1" expand="false"/>
+                <task id="133" name="Sensors and actuator list" color="#dbde70" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="false"/>
+                <task id="135" name="Trade off hardware/software" color="#ddd93a" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-09" duration="2" complete="0" priority="1" expand="false"/>
+                <task id="137" name="Initial BoM" color="#dbdf44" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-11" duration="1" complete="0" priority="1" expand="false"/>
+            </task>
+            <task id="139" name="Software" color="#8cb6ce" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="true">
+                <task id="141" name="Software Layout" color="#ce908c" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="false"/>
+                <task id="143" name="Error manipulations" color="#cc8c79" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-09" duration="3" complete="0" priority="1" expand="false"/>
+                <task id="145" name="Initial BoM" color="#d68b73" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-11" duration="1" complete="0" priority="1" expand="false"/>
+            </task>
+        </task>
+        <task id="29" name="Design Acceptance" color="#8cb6ce" meeting="false" start="2018-10-12" duration="5" complete="0" priority="1" expand="true">
+            <task id="31" name="Mechanical" color="#8cb6ce" meeting="false" start="2018-10-12" duration="5" complete="0" priority="1" expand="true">
+                <task id="33" name="CAD models" color="#8cce8f" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-12" duration="4" complete="0" priority="1" expand="false"/>
+                <task id="35" name="Part drawings" color="#8cce8d" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-12" duration="4" complete="0" priority="1" expand="false"/>
+                <task id="37" name="Updated BoM" color="#8cce92" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-16" duration="1" complete="0" priority="1" expand="false"/>
+            </task>
+            <task id="39" name="Electrical" color="#8cb6ce" meeting="false" start="2018-10-12" duration="5" complete="0" priority="1" expand="true">
+                <task id="41" name="Circuit diagrams" color="#c4c264" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-12" duration="1" complete="0" priority="1" expand="false"/>
+                <task id="43" name="Testing" color="#c1bf3b" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-12" duration="5" complete="0" priority="1" expand="false"/>
+                <task id="45" name="Layout diagrams" color="#c1c04c" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-15" duration="2" complete="0" priority="1" expand="false"/>
+            </task>
+            <task id="47" name="Software" color="#8cb6ce" meeting="false" start="2018-10-12" duration="5" complete="0" priority="1" expand="true">
+                <task id="49" name="Flowcharts" color="#c16f65" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-12" duration="1" complete="0" priority="1" expand="false"/>
+                <task id="51" name="Interface/Interaction documentation" color="#cd7264" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-12" duration="4" complete="0" priority="1" expand="false"/>
+                <task id="53" name="BoM" color="#d37b6e" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-15" duration="2" complete="0" priority="1" expand="false"/>
+                <task id="55" name="Sub-systems" color="#c66d5f" shape="0,1,0,1,0,0,1,0,0,1,0,1,1,0,0,0" meeting="false" start="2018-10-12" duration="5" complete="0" priority="1" expand="false"/>
+            </task>
+        </task>
+        <task id="19" name="Basic Functionality Demo" color="#8cb6ce" meeting="false" start="2018-10-17" duration="6" complete="0" priority="1" expand="true">
+            <task id="21" name="Chassis" color="#8cb6ce" meeting="false" start="2018-10-17" duration="6" complete="0" priority="1" expand="false"/>
+            <task id="23" name="Line following circuit" color="#8cb6ce" meeting="false" start="2018-10-17" duration="6" complete="0" priority="1" expand="false"/>
+            <task id="25" name="Line following program" color="#8cb6ce" meeting="false" start="2018-10-17" duration="6" complete="0" priority="1" expand="false"/>
+            <task id="27" name="Two additional sub-systems" color="#8cb6ce" meeting="false" start="2018-10-17" duration="6" complete="0" priority="1" expand="false"/>
+        </task>
+        <task id="11" name="Final Presentation" color="#8cb6ce" meeting="false" start="2018-10-23" duration="6" complete="0" priority="1" expand="true"/>
+        <task id="3" name="Competition" color="#8cb6ce" meeting="false" start="2018-10-29" duration="5" complete="0" priority="1" expand="false"/>
+        <task id="1" name="Final Report" color="#8cb6ce" meeting="false" start="2018-10-29" duration="9" complete="0" priority="1" expand="false"/>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <taskdisplaycolumns>
+        <displaycolumn property-id="tpd3" order="0" width="75"/>
+        <displaycolumn property-id="tpd4" order="1" width="75"/>
+        <displaycolumn property-id="tpd5" order="2" width="75"/>
+    </taskdisplaycolumns>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
