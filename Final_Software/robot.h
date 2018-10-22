@@ -1,5 +1,7 @@
 #include <iostream>
+
 using namespace std;
+
 #include <robot_instr.h>
 #include <robot_link.h>
 #include <stdlib.h>     //for using the function sleep
@@ -16,14 +18,27 @@ using namespace std;
 #define back 2
 #define right 3
 #define ramp_speed 255
-using namespace std;
 
-int board_0, board_1, left_speed, right_speed, junction_no = 0, lost_no = 0;
-bool IR[4], debug, junction_detected = 0;
+int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received();
+
+bool IR[4], debug, junction_detected;
+
+void turn_left(), turn_right(), turn_around(), rth(), junction(), line_follow(), pickup(), dropoff();
 
 robot_link rlink;                      // datatype for the robot link
 
 stopwatch watch;                       // setup watch
+
+extern int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received();
+extern bool IR[4], debug, junction_detected;
+extern void turn_left(), turn_right(), turn_around(), rth(), junction(), line_follow(), pickup(), dropoff();
+extern robot_link rlink;
+extern stopwatch watch;
+
+
+
+
+
 
 
 // Create classes

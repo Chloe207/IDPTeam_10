@@ -1,7 +1,11 @@
 #include "robot.h"
+using namespace std;
 
+junction_no = 0;
+lost_no = 0;
+junction_detected = 0;
+debug = true;
 
-//debug = true;
 
 int main () {
     

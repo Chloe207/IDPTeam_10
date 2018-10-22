@@ -1,5 +1,6 @@
-
+#ifndef robot
 #include "robot.h"
+#endif
 
 int package_type(void)  {
     return 0;
