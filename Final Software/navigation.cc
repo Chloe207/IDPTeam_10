@@ -3,7 +3,7 @@
 
 void line_follow () {
 
-    right_speed = 20;                                            // rotation speed of right motor
+    right_speed = 30;                                            // rotation speed of right motor
     left_speed = 127 + right_speed;                              // rotation speed of left motor
     
     for (int k = 0; k < 4; k++) {                                // convert data from I2C into bits
@@ -102,8 +102,8 @@ int junction()  {
         delay(100);
         
         for (int t = 0; t < 1500/left_speed; t++) {
-            rlink.command(MOTOR_1_GO, left);
-            rlink.command(MOTOR_2_GO, left);
+            rlink.command(MOTOR_1_GO, left_speed);
+            rlink.command(MOTOR_2_GO, left_speed);
         }
     }
 }
