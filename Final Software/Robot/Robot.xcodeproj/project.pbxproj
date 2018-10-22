@@ -33,7 +33,7 @@
 		66A85DB021773D3500B65C59 /* stopwatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stopwatch.h; sourceTree = "<group>"; };
 		66A85DB121773D3500B65C59 /* robot_link.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_link.h; sourceTree = "<group>"; };
 		66A85DB221773D3500B65C59 /* robot_delay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_delay.h; sourceTree = "<group>"; };
-		66D4D1EC21774A0E000662DB /* robot_inst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = robot_inst.h; sourceTree = "<group>"; };
+		66D4D1EC21774A0E000662DB /* robot_instr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = robot_instr.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				66A85DB221773D3500B65C59 /* robot_delay.h */,
-				66D4D1EC21774A0E000662DB /* robot_inst.h */,
+				66D4D1EC21774A0E000662DB /* robot_instr.h */,
 				66A85DB021773D3500B65C59 /* stopwatch.h */,
 				66A85DB121773D3500B65C59 /* robot_link.h */,
 			);
