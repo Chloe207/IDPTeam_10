@@ -13,18 +13,21 @@ void line_follow () {
 
             
     if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 1)) {
+        junction_detected = 0;
         rlink.command(MOTOR_1_GO, right_speed);                    // Line only detected in the middle
         rlink.command(MOTOR_2_GO, left_speed);
         if (debug == true) {cout << "moving forward" << endl;}
     }
     
     if ((IR[right] == 1) && (IR[left] == 0) && (IR[middle] == 1)) {
+        junction_detected = 0;
         rlink.command(MOTOR_1_GO, right_speed*0.4);
         rlink.command(MOTOR_2_GO, 127 + right_speed * 1.60);
         if (debug == true) {cout << "moving left" << endl;}
     }
     
     if ((IR[right] == 1) && (IR[left] == 0) && (IR[middle] == 0)) {
+        junction_detected = 0;
         rlink.command(MOTOR_1_GO, right_speed);
         rlink.command(MOTOR_2_GO, 127 + right_speed * 1.80);
         if (debug == true) {cout << "moving very left" << endl;}
@@ -37,12 +40,14 @@ void line_follow () {
     }
             
     if ((IR[right] == 0) && (IR[left] == 1) && (IR[middle] == 0)) {
+        junction_detected = 0;
         rlink.command(MOTOR_1_GO, right_speed * 2);
         rlink.command(MOTOR_2_GO, left_speed);
         if (debug == true) {cout << "moving very right" << endl;}
     }
             
     if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {
+        junction_detected = 0;
         rlink.command(MOTOR_1_GO, 0);
         rlink.command(MOTOR_2_GO, 0);
         delay(100);
@@ -56,26 +61,24 @@ void line_follow () {
         cout << "lost line" << endl;
     }
         
-    if ((IR[right] == 1) && (IR[left] == 1) && (IR[middle] == 1)) {
-        junction_no = junction_no + 1;
-        if (debug == true) {
-            cout << "going over junction" << endl;
-            cout << junction_no <<endl;
-        }
-        for (int t=1;t<100;t=t+1){
-            rlink.command(MOTOR_1_GO, right_speed);
-            rlink.command(MOTOR_2_GO, left_speed);
-            if (junction_no == 1) {
-                if (IR[back] == 0) {
-                    rlink.command(MOTOR_1_GO, right_speed);
-                    rlink.command(MOTOR_2_GO, left_speed);}
-                else {
-                    rlink.command(MOTOR_1_GO, right_speed);
-                    rlink.command(MOTOR_2_GO, right_speed);
-                    delay(15);
-                    if (IR[middle] == 1){
-                        return;}}
+    if ((IR[right] == 1) && (IR[left] == 1) && (IR[middle] == 1)) {     // Going over junction
+        if (junction_detected == 0) {
+            
+            junction_no += 1;
+            junction_detected = 1;
+            
+            if (debug == true) {
+                cout << "going over junction" << endl;
+                cout << junction_no <<endl;
             }
+        }
+    }
+    
+    if (IR[back] == 1) {
+        junction();
+        
+        if (debug == true) {
+            cout << "Back triggered" << endl;
         }
     }
 }
@@ -91,20 +94,18 @@ int dropoff()   {
 }
 
 int junction()  {
-
-    junction_no = junction_no + 1;                          // Robot is going over a junction
-    cout << "Junction" << junction_no <<endl;
     
-    if (IR[back] == 1) {
-        cout << "Rotating for junction" << endl;            // Debugging comment
+    if (junction_no == 1) {
         rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
         rlink.command(MOTOR_2_GO, 0);
         delay(100);
         
-        for (int t = 0; t < 1500/left_speed; t++) {
-            rlink.command(MOTOR_1_GO, left_speed);
-            rlink.command(MOTOR_2_GO, left_speed);
+        
+        if (debug == true) {
+            cout << "Turning at junction" << junction_no << endl;
         }
+        
+        turn_left();
     }
 }
 
@@ -116,12 +117,27 @@ void turn_around(void)  {
     
 }
 
-void turn_left(void)    {
+int turn_left()    {
+    
+    if (debug == true) {
+        cout << "turning left" << endl;
+    }
+    for (int t = 0; t < 1500/left_speed; t++) {
+        rlink.command(MOTOR_1_GO, left_speed);
+        rlink.command(MOTOR_2_GO, left_speed);
+    }
     
 }
 
-void turn_right(void)   {
+int turn_right()   {
     
+    if (debug == true) {
+        cout << "turning right" << endl;
+    }
+    for (int t = 0; t < 1500/left_speed; t++) {
+        rlink.command(MOTOR_1_GO, right_speed);
+        rlink.command(MOTOR_2_GO, right_speed);
+    }
 }
 
 void rth(void)  {
