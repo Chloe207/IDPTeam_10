@@ -177,7 +177,8 @@ int main () {
 
 			}	
 			junction = 0;
-			cout << "Finished rotation" << endl;		
+			cout << "Finished rotation" << endl;
+			delay(1000);		
 
 		}
 	}
