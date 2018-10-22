@@ -1,0 +1,69 @@
+
+#include <robot.h>
+
+void line_follow () {
+    
+	
+    for (int k = 0, k < 4, k++) {
+        IR[k] = (board_0 & ( 1 << k )) >> k;
+        cout << IR[k] << endl;
+    }
+        
+        
+    // if (IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 1) {
+    //     rlink.command(MOTOR_1_GO, 0);
+    //     rlink.command(MOTOR_2_GO, 0);
+    //     delay(200)
+    //     rlink.command(MOTOR_1_GO, 228);
+    //     rlink.command(MOTOR_2_GO, 100);}
+
+    // if (IR[right] == 1) {
+    //     rlink.command(MOTOR_1_GO, 127);
+    //     rlink.command(MOTOR_2_GO, 228);
+    // }
+
+    // if (IR[left] == 1) {
+    //     rlink.command(MOTOR_1_GO, 100);
+    //     rlink.command(MOTOR_2_GO, 255);
+    // }
+
+    // if (middle_IR == 0) {
+    //     rlink.command(MOTOR_1_GO, 0);
+    //     rlink.command(MOTOR_2_GO, 0);
+    // }
+	
+
+    rlink.command (RAMP_TIME, 255);			// default ramp time
+}
+
+int pickup()    {
+    
+}
+
+int dropoff()   {
+    
+}
+
+int junction()  {
+    
+}
+
+int parcel_num(int) {
+    
+}
+
+void turn_around(void)  {
+    
+}
+
+void turn_left(void)    {
+    
+}
+
+void turn_right(void)   {
+    
+}
+
+void rth(void)  {
+    
+}
