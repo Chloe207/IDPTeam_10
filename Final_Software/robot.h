@@ -18,7 +18,7 @@ using namespace std;
 #define ramp_speed 255
 
 int board_0, board_1, left_speed, right_speed, junction_no = 0, lost_no = 0;
-bool IR[4], debug, junction_detected;
+bool IR[4], debug, junction_detected = 0;
 
 robot_link rlink;                      // datatype for the robot link
 
