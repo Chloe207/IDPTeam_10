@@ -1,8 +1,8 @@
-#include <robot.h>
+#include "robot.h"
 
-DEBUG = true;
+debug = true;
 
-void main () {
+int main () {
     
     watch.start();                                  // start timer
     

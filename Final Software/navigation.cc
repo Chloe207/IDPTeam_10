@@ -1,9 +1,7 @@
 
-#include <robot.h>
+#include "robot.h"
 
 void line_follow () {
-    
-    int val,a,lost_no=0,junction_no=0;                                  // data from microprocessor
 
     right_speed = 20;                                            // rotation speed of right motor
     left_speed = 127 + right_speed;                              // rotation speed of left motor
@@ -53,7 +51,8 @@ void line_follow () {
         delay(500);
         lost_no = lost_no + 1;
         if (lost_no >100) {
-            return 0;}
+            return;
+        }
         cout << "lost line" << endl;
     }
         
@@ -67,7 +66,7 @@ void line_follow () {
             rlink.command(MOTOR_1_GO, right_speed);
             rlink.command(MOTOR_2_GO, left_speed);
             if (junction_no == 1) {
-                if (IR[front] == 0) {
+                if (IR[back] == 0) {
                     rlink.command(MOTOR_1_GO, right_speed);
                     rlink.command(MOTOR_2_GO, left_speed);}
                 else {
@@ -75,7 +74,7 @@ void line_follow () {
                     rlink.command(MOTOR_2_GO, right_speed);
                     delay(15);
                     if (IR[middle] == 1){
-                        return 0;}}
+                        return;}}
             }
         }
     }
@@ -104,6 +103,7 @@ int junction()  {
         
         for (int t = 0; t < 1500/left_speed; t++) {
             rlink.command(MOTOR_1_GO, left);
+            rlink.command(MOTOR_2_GO, left);
         }
     }
 }

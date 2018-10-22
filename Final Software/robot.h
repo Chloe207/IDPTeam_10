@@ -13,11 +13,11 @@ using namespace std;
 #define ROBOT_NUM 14   // The id number (see below)
 #define middle 0
 #define left 1
-#define front 2
+#define back 2
 #define right 3
 #define ramp_speed 255
 
-int board_0, board_1, left_speed, right_speed, junction_no =0;
+int board_0, board_1, left_speed, right_speed, junction_no = 0, lost_no = 0;
 bool IR[4], debug, junction_detected;
 
 robot_link rlink;                      // datatype for the robot link
