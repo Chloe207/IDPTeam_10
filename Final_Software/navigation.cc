@@ -1,6 +1,52 @@
 
 #include "robot.h"
 
+void turn_around(void)  {
+    
+}
+
+void turn_left()    {
+    
+    if (debug == true) {
+        cout << "turning left" << endl;
+    }
+    for (int t = 0; t < 1500/left_speed; t++) {
+        rlink.command(MOTOR_1_GO, left_speed);
+        rlink.command(MOTOR_2_GO, left_speed);
+    }
+    
+}
+
+void turn_right()   {
+    
+    if (debug == true) {
+        cout << "turning right" << endl;
+    }
+    for (int t = 0; t < 1500/left_speed; t++) {
+        rlink.command(MOTOR_1_GO, right_speed);
+        rlink.command(MOTOR_2_GO, right_speed);
+    }
+}
+
+void rth(void)  {
+}
+
+void junction()  {
+    
+    if (junction_no == 1) {
+        rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
+        rlink.command(MOTOR_2_GO, 0);
+        delay(100);
+        
+        
+        if (debug == true) {
+            cout << "Turning at junction" << junction_no << endl;
+        }
+        
+        turn_left();
+    }
+}
+
 void line_follow () {
 
     right_speed = 30;                                            // rotation speed of right motor
@@ -85,61 +131,18 @@ void line_follow () {
 
 
 
-int pickup()    {
-    
+void pickup()    {
+
 }
 
-int dropoff()   {
-    
+void dropoff()   {
+
 }
 
-int junction()  {
-    
-    if (junction_no == 1) {
-        rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
-        rlink.command(MOTOR_2_GO, 0);
-        delay(100);
-        
-        
-        if (debug == true) {
-            cout << "Turning at junction" << junction_no << endl;
-        }
-        
-        turn_left();
-    }
-}
+
 
 int parcel_num(int) {
-    
+    return 0;
 }
 
-void turn_around(void)  {
-    
-}
 
-int turn_left()    {
-    
-    if (debug == true) {
-        cout << "turning left" << endl;
-    }
-    for (int t = 0; t < 1500/left_speed; t++) {
-        rlink.command(MOTOR_1_GO, left_speed);
-        rlink.command(MOTOR_2_GO, left_speed);
-    }
-    
-}
-
-int turn_right()   {
-    
-    if (debug == true) {
-        cout << "turning right" << endl;
-    }
-    for (int t = 0; t < 1500/left_speed; t++) {
-        rlink.command(MOTOR_1_GO, right_speed);
-        rlink.command(MOTOR_2_GO, right_speed);
-    }
-}
-
-void rth(void)  {
-    
-}

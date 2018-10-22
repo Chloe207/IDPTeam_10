@@ -16,6 +16,7 @@ using namespace std;
 #define back 2
 #define right 3
 #define ramp_speed 255
+using namespace std;
 
 int board_0, board_1, left_speed, right_speed, junction_no = 0, lost_no = 0;
 bool IR[4], debug, junction_detected = 0;
@@ -26,7 +27,7 @@ stopwatch watch;                       // setup watch
 
 
 // Create classes
-class junction {
+/*class junction {
     
     // Access Specifier
 public:
@@ -63,3 +64,4 @@ public:
     int colour;
     int delivery_location;
 }
+*/

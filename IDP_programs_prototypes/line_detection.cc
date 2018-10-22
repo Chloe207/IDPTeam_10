@@ -26,11 +26,7 @@ int lost () {
 
 	motor_1 = 35;												// Rotation speed of motor 1(right)
     motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
-    
-	for (int t=1; t<800; t = t+1) {
-		//for (int k = 0; k < 4; k++) {
-			//IR[k] = (IR_data & ( 1 << k )) >> k;}	
-		
+    		
 		for (int a=1; a < 200; a = a+1) {
 			if (IR[middle] == 1) {
 				return 0;
@@ -58,7 +54,7 @@ int lost () {
 				rlink.command(MOTOR_2_GO, motor_1);			 		// Reverse
 			}
 		}
-	}
+	
 	return 0;
 }
 
@@ -90,21 +86,6 @@ int main () {
 
 		rlink.command (RAMP_TIME, 255);							// Default ramp time
 		
-		if ((IR[back] == 1) && (junction_no == 3)) {
-				cout << "Rotating for junction" << endl;			// Debugging comment
-				rlink.command(MOTOR_1_GO, 0);						// Stop the robot
-				rlink.command(MOTOR_2_GO, 0);
-				delay(1000);										// Wait for 100 ms 
-				
-				for (int t=1; t<500; t = t+1) {
-					rlink.command(MOTOR_1_GO, motor_1);					
-					rlink.command(MOTOR_2_GO, motor_1*1.2);			 	// Rotate by 90 degrees
-
-				}	
-				junction = 0;
-				cout << "Finished rotation" << endl;
-				delay(1000);		
-		}
 	
 		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 1)) {		
 			lost_no = 0;										// Reset line lost count
@@ -165,7 +146,7 @@ int main () {
 		if ((IR[right] == 1) && (IR[left] == 1) && (IR[middle] == 1)) {
 			if (a == 0) {
 				junction_no = junction_no + 1;					// Robot is going over a junction
-				if (junction_no == 3) {
+				if (junction_no == 1) {
 					cout << "Corner" << endl;
 					junction = 1;
 				}
@@ -176,6 +157,22 @@ int main () {
 			cout << "junction ignore" << endl;
 		}
 		
+		if ((IR[back] == 1) && (junction_no == 1)) {
+			cout << "Rotating for junction" << endl;			// Debugging comment
+			rlink.command(MOTOR_1_GO, 0);						// Stop the robot
+			rlink.command(MOTOR_2_GO, 0);
+			delay(2000);										// Wait for 100 ms 
+				
+			for (int t=1; t<500; t = t+1) {
+				rlink.command(MOTOR_1_GO, motor_1);					
+				rlink.command(MOTOR_2_GO, motor_1*1.2);			 	// Rotate by 90 degrees
+
+			}	
+			junction = 0;
+			cout << "Finished rotation" << endl;
+			delay(1000);		
+		}
+	
 		
 	}
 	

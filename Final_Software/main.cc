@@ -1,6 +1,7 @@
 #include "robot.h"
 
-debug = true;
+
+//debug = true;
 
 int main () {
     
