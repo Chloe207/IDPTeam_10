@@ -1,0 +1,21 @@
+#include <iostream>
+#include <robot_instr.h>
+#include <robot_link.h>
+#include <stdlib.h>     //for using the function sleep
+#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
+#include <stopwatch.h>
+#include <robot_delay.h>
+#include <cmath>
+
+#define ROBOT_NUM 14   // The id number (see below)
+#define middle 0
+#define left 1
+#define back 2
+#define right 3
+robot_link rlink;      					    				// Datatype for the robot link
+using namespace std;
+
+void pick_up() {
+}

@@ -1,12 +1,30 @@
-#ifndef robot
-#include "robot.h"
-#endif
+//#ifndef robot
+//#include "robot.h"
+//#endif
+#include <iostream>
+#include <robot_instr.h>
+#include <robot_link.h>
+#include <stdlib.h>     //for using the function sleep
+#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
+#include <stopwatch.h>
+#include <robot_delay.h>
+#include <cmath>
+
+#define ROBOT_NUM 14   // The id number (see below)
+#define middle 0
+#define left 1
+#define back 2
+#define right 3
+using namespace std;
+robot_link rlink; 
 
 void turn_around(void)  {
     
 }
 
-void turn_left()    {
+/*void turn_left()    {
     
     if (debug == true) {
         cout << "turning left" << endl;
@@ -27,81 +45,95 @@ void turn_right()   {
         rlink.command(MOTOR_1_GO, right_speed);
         rlink.command(MOTOR_2_GO, right_speed);
     }
-}
+}*/
 
 void rth(void)  {
 }
 
-void junction()  {
-	int motor_1,motor_2
-	robot_link rlink;      					    				// Datatype for the robot link
-	
-	cout << "Rotating for junction" << endl;					// Debugging comment
-	rlink.command(MOTOR_1_GO, 0);								// Stop the robot
-	rlink.command(MOTOR_2_GO, 0);
-	delay(1000);												// Wait
-		
-	for (int t=1; t<400; t = t+1) {
-		rlink.command(MOTOR_1_GO, motor_1);					
-		rlink.command(MOTOR_2_GO, motor_1*1.2);			 		// Rotate by 90 degrees
-	}	
-	junction = 0;
-	cout << "Finished rotation" << endl;
-    rlink.command(MOTOR_1_GO, 0);                       		// Stop the robot
-    rlink.command(MOTOR_2_GO, 0);
-	delay(1000);		
-}
-
 int lost () {
-	int /*IR_data,*/ motor_1, motor_2;							// Data from IR sensors
+	int IR_data, motor_1, motor_2;							// Data from IR sensors
 	bool IR[4];
-	robot_link rlink;      					    				// Datatype for the robot link
 
-	motor_1 = 35;												// Rotation speed of motor 1(right)
+	motor_1 = 60;												// Rotation speed of motor 1(right)
     motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
-    		
-    for (int a = 1; a < 200; a = a + 1) {
-        if (IR[middle] == 1) {
-            //cout << "line found" << endl;                        // Debugging comment
-            return 0;
-        }
-        else {
-            rlink.command(MOTOR_1_GO, 0);
-            rlink.command(MOTOR_2_GO, motor_1);			 	    // Rotate to the left
-        }
-    }
-    for (int a = 1; a < 400; a = a + 1) {
-        if (IR[middle] == 1) {
-            //cout << "line found" << endl;                        // Debugging comment
-            return 0;
-        }
-        else {
-            rlink.command(MOTOR_1_GO, motor_1);
-            rlink.command(MOTOR_2_GO, 0);			 	        // Rotate to the right
-        }
-    }
-    for (int a = 1; a < 200; a = a + 1) {
-        if (IR[middle] == 1) {
-            //cout << "line found" << endl;                        // Debugging comment
-            return 0;
-        }
-        else {
-            rlink.command(MOTOR_1_GO, motor_2);
-            rlink.command(MOTOR_2_GO, motor_1);			 		// Reverse
-        }
-    }
+    
+    for (int a = 1; a < 50; a = a + 1) {
+		IR_data = rlink.request(READ_PORT_0);	    			    // Read value from IR board
+		
+		for (int k = 0; k < 4; k++) {
+		IR[k] = (IR_data & ( 1 << k )) >> k;
+		}
+		
+		if (a < 20) {
+			if (IR[middle] == 1) {
+				return 0;
+			}
+			else {
+				rlink.command(MOTOR_1_GO, motor_1);
+				rlink.command(MOTOR_2_GO, motor_2 * 0.8);			 	// Rotate to the left    
+			}
+		}
+    
+		if ((a < 40) && (a > 20)) {
+			if (IR[middle] == 1) {
+				return 0;
+			}
+			else {
+				rlink.command(MOTOR_1_GO, motor_1 * 0.8);
+				rlink.command(MOTOR_2_GO, motor_2);			 	        // Rotate to the right
+			}
+		}
+    
+		if (a > 40) { 
+			if (IR[middle] == 1) {
+				return 0;
+			}
+			else {
+				rlink.command(MOTOR_1_GO, motor_2);
+				rlink.command(MOTOR_2_GO, motor_1);			 			// Reverse
+			}
+		}
+	}
 	return 0;
 }
 
+void junction_r(int junction)  {
+	int motor_1;
+	cout << "Rotating for junction" << endl;			// Debugging comment
+	rlink.command(MOTOR_1_GO, 0);						// Stop the robot
+	rlink.command(MOTOR_2_GO, 0);
+	delay(500);										// Wait
+		
+	for (int t=1; t<260; t = t+1) {
+		rlink.command(MOTOR_1_GO, motor_1);					
+		rlink.command(MOTOR_2_GO, motor_1*1.2);			 	// Rotate by 90 degrees
+	}	
+	junction = 0;
+	cout << "Finished rotation" << endl;
+    rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
+    rlink.command(MOTOR_2_GO, 0);
+	delay(500);	
+	lost();			
+}
+
+bool pickup(bool package[10], int junction_no) {
+	rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
+    rlink.command(MOTOR_2_GO, 0);
+	delay(500);
+	
+	package[junction_no] = 0;
+	return package;
+}
+
 int line_follow() {
-	delay(1000);
 	int IR_data,motor_1,motor_2,a;		        				// Data from IR sensors
 	int junction_no=0, junction;	                         	// Data from microprocessor
-	bool IR[4];
-
-	robot_link rlink;      					    				// Datatype for the robot link
+	bool IR[4],package[10];
 	
-    motor_1 = 45;												// Rotation speed of motor 1(right)
+	for (int k = 0; k < 10; k++) {
+		package[k] = 1;
+		}
+    motor_1 = 60;												// Rotation speed of motor 1(right)
     motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
     
 	if (!rlink.initialise (ROBOT_NUM)) { 						// Setup the link
@@ -113,7 +145,7 @@ int line_follow() {
 		cout << "Initialised"<< endl;
 	}
 	
-	for (int t=1; t<3000; t = t+1) {
+	for (int t=1; t<30000; t = t+1) {
 		IR_data = rlink.request(READ_PORT_0);	    			    // Read value from IR board
 
 		for (int k = 0; k < 4; k++) {
@@ -132,46 +164,29 @@ int line_follow() {
 			a = 0;
 			rlink.command(MOTOR_1_GO, motor_1);				    // Line detected on the right i.e. robot going left
 			rlink.command(MOTOR_2_GO, 127 + motor_1 * 1.80);
-			//cout << "moving left" << endl;						// Debugging comment
 		 }
 			 
 		if ((IR[right] == 1) && (IR[left] == 0) && (IR[middle] == 0)) {
 			a = 0;
 			rlink.command(MOTOR_1_GO, motor_1);			    // Line only detected on the right i.e. robot has strongly deviated to the left
 			rlink.command(MOTOR_2_GO, 127 + motor_1 * 2.00);
-			//cout << "moving very left" << endl;					// Debugging comment
 		 }		
 		 
 		if ((IR[right] == 0) && (IR[left] == 1) && (IR[middle] == 1)) {
 			a = 0;
 			rlink.command(MOTOR_1_GO, motor_1 * 1.80);			    // Line detected on the left i.e. robot going right
 			rlink.command(MOTOR_2_GO, motor_2);
-			//cout << "moving right" << endl;						// Debugging comment
 		}
 
 		if ((IR[right] == 0) && (IR[left] == 1) && (IR[middle] == 0)) {
 			a = 0;
 			rlink.command(MOTOR_1_GO, motor_1 * 2.00);			    // Line only detected on the left i.e. robot has stongly deviated to the right
 			rlink.command(MOTOR_2_GO, motor_2);
-			//cout << "moving very right" << endl;				    // Debugging comment
 		}
 		
 		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {
 			a = 0;
-            //cout << "lost line" << endl;
 			lost();
-			/*rlink.command(MOTOR_1_GO, 0);						    // Line has been lost
-			rlink.command(MOTOR_2_GO, 0);
-			delay(100);											    // Stop the robot in case this is a safety risk
-			rlink.command(MOTOR_1_GO, motor_2);					
-			rlink.command(MOTOR_2_GO, motor_1);
-			delay(500);											    // Reverse for 500 ms
-			
-			lost_no = lost_no + 1;								    // Start counting, if robot is very lost stop moving
-			if (lost_no >20) {
-				return 0;
-				}*/
-
 		}
 		
 		if ((IR[right] == 1) && (IR[left] == 1) && (IR[middle] == 1)) {
@@ -180,24 +195,18 @@ int line_follow() {
                 cout << "Junction" << junction_no <<endl;
                 a = 1;
                 junction = 1;
-				/*if (junction_no == 1) {
-					cout << "Corner" << endl;
-					junction = 1;
-                 else {
-                    cout << "junction ignore" << endl;
-                 }
-				}*/
 			}
 		}
 		
-		if ((IR[back] == 1) && (junction_no == 4) && (junction == 1)) {
-			junction()
+		if (((IR[back] == 1) && (junction_no == 6) && (junction == 1)) || ((IR[back] == 1) && (junction_no == 12) && (junction == 1)) || ((IR[back] == 1) && (junction_no == 13) && (junction == 1))) {
+			junction_r(junction);
+		}
+		
+		if (package[junction_no] == 1) {
+			pickup();
 		}
 	}
-}
-
-void pickup()    {
-
+	return 0;
 }
 
 void dropoff()   {
