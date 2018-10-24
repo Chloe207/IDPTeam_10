@@ -1,5 +1,8 @@
+#ifndef ROBOT_H
+#define ROBOT_H
 #include "robot.h"
-using namespace std;
+#endif
+
 
 int main () {
     junction_no = 0;

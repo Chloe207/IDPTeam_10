@@ -1,6 +1,8 @@
-//#ifndef ROBOT_NUM
+#ifndef ROBOT_H
+#define ROBOT_H
 #include "robot.h"
-//#endif
+#endif
+
 
 
 
@@ -12,7 +14,7 @@ void turn_around(void)  {
 void rth(void)  {
 }
 
-int lost () {
+int lost_line () {
     int a;
 
 		if (a < 20) {
@@ -62,7 +64,7 @@ void turn_left(junction_detected)  {
     rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
     rlink.command(MOTOR_2_GO, 0);
 	delay(500);	
-	lost();			
+	lost_line();
 }
 
 int pickup() {
@@ -83,7 +85,7 @@ int pickup() {
 	watch.stop();
 	watch.start();
 	while (watch.read() < 300) { 
-		rlink.command(MOTOR_1_GO, left_speed);                        		// Move forward a little (this is needed otherwise lost() does not work)
+		rlink.command(MOTOR_1_GO, left_speed);                        		// Move forward a little (this is needed otherwise lost_line() does not work)
 		rlink.command(MOTOR_2_GO, right_speed);
 		delay(0.1);
 	}
@@ -92,7 +94,7 @@ int pickup() {
 	while (watch.read() < 1500) {
 		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {	// Move towards the docking area, this will need to be changed when the switch is functional
 			cout << "lost here" << endl;
-			lost();
+			lost_line();
 		}
 		else { 
 			rlink.command(MOTOR_1_GO, left_speed);                    		// If not lost, just move forward
@@ -146,7 +148,7 @@ int line_follow() {
 		
 		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {
 			a = 0;
-			lost();
+			lost_line();
 		}
 		
 		if ((IR[right] == 1) && (IR[left] == 1) && (IR[middle] == 1)) {
@@ -159,6 +161,7 @@ int line_follow() {
 		}
 		
 		if (((IR[back] == 1) && (junction_no == 6) && (junction_detected == 1)) || ((IR[back] == 1) && (junction_no == 12) && (junction_detected== 1)) || ((IR[back] == 1) && (junction_no == 13) && (junction_detected == 1))) {
+            
 			turn_left(junction_detected);
 		}
 		
