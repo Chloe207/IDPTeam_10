@@ -8,7 +8,6 @@ int main () {
     junction_no = 0;
 	lost_no = 0;
 	junction_detected = 0;
-	debug = true;
     
     left_speed = 60;                                                // Rotation speed of motor 1(right)
     right_speed = 127 + left_speed;                                 // Rotation speed of motor 2 to go straight (left)
@@ -29,8 +28,9 @@ int main () {
         board_0 = rlink.request(READ_PORT_0);       // Read from board 0
         board_1 = rlink.request(READ_PORT_1);       // Read from board 1
         
-        for (int k = 0; k < 4; k++) {               // Output data from IRs
-            IR[k] = (board_0 & ( 1 << k )) >> k;
+        for (int k = 0; k < 7; k++) {               // Output data from IRs
+            sensor1[k] = (board_0 & ( 1 << k )) >> k;
+            sensor2[k] = (board_1 & ( 1 << k )) >> k;
         }
     
         line_follow();

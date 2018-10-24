@@ -17,21 +17,23 @@ using namespace std;
 #define left 1
 #define back 2
 #define right 3
+#define switch 
 #define ramp_speed 255
 
-int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow();
+int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line();
 
-bool IR[4], debug, junction_detected, package[10];
+bool sensor1[7], sensor2[7], junction_detected, package[10];
 
-void turn_left(), turn_right(), turn_around(), rth(), junction(), pickup(), dropoff();
+void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff();
 
 robot_link rlink;                      // datatype for the robot link
 
 stopwatch watch;                       // setup watch
 
-extern int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow();
-extern bool IR[4], debug, junction_detected, package[10];
-extern void turn_left(), turn_right(), turn_around(), rth(), junction(), pickup(), dropoff();
+
+extern int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line();
+extern bool sensor1[7], sensor2[7], junction_detected, package[10];
+extern void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff();
 extern robot_link rlink;
 extern stopwatch watch;
 
