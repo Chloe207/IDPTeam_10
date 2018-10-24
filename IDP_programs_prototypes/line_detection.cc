@@ -14,14 +14,34 @@
 #define left 1
 #define back 2
 #define right 3
+#define white 4
+#define	blue 5
+#define	trigger 6
 robot_link rlink;      					    				// Datatype for the robot link
 using namespace std;
+stopwatch watch;
 
 //int motor_1(int motor_demanded) 
 
+int pickup() {
+	int motor_1, motor_2;
+
+	motor_1 = 60;												// Rotation speed of motor 1(right)
+	motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
+	rlink.command(MOTOR_1_GO, 0);                       		// Stop the robot
+	rlink.command(MOTOR_2_GO, 0);
+	/*watch.start();
+	while (watch.read() < 5000) { 
+		delay(0.1);
+	}*/
+	rlink.command(MOTOR_1_GO, motor_1);                        // Stop the robot
+	rlink.command(MOTOR_2_GO, motor_2);
+	return 1;
+}
+
 int lost () {
 	int IR_data, motor_1, motor_2;							// Data from IR sensors
-	bool IR[4];
+	bool IR[7];
 
 	motor_1 = 60;												// Rotation speed of motor 1(right)
     motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
@@ -29,14 +49,13 @@ int lost () {
     for (int a = 1; a < 50; a = a + 1) {
 		IR_data = rlink.request(READ_PORT_0);	    			    // Read value from IR board
 		
-		for (int k = 0; k < 4; k++) {
+		for (int k = 0; k < 7; k++) {
 		IR[k] = (IR_data & ( 1 << k )) >> k;
 		}
 		
 		if (a < 20) {
 			if (IR[middle] == 1) {
-				cout << "found1" << endl;
-				return 0;
+				 return 0;
 			}
 			else {
 				rlink.command(MOTOR_1_GO, motor_1);
@@ -46,7 +65,6 @@ int lost () {
     
 		if ((a < 40) && (a > 20)) {
 			if (IR[middle] == 1) {
-				cout << "found2" << endl;
 				return 0;
 			}
 			else {
@@ -57,7 +75,6 @@ int lost () {
     
 		if (a > 40) { 
 			if (IR[middle] == 1) {
-				cout << "found3" << endl;
 				return 0;
 			}
 			else {
@@ -70,13 +87,19 @@ int lost () {
 }
 
 int main () {
-	int IR_data,motor_1,motor_2,a;		        				// Data from IR sensors
+	int IR_data,motor_1,motor_2,a,pick_on;		        				// Data from IR sensors
 	int junction_no=0, junction;	                         	// Data from microprocessor
-	bool IR[4],package[10];
+	bool IR[7],package[11];
 	
-	for (int k = 0; k < 10; k++) {
-			package[k] = 1;
+	for (int k = 0; k < 11; k++) {
+		if ((k == 0) || (k == 1)) {
+			package[k] = 0;
 		}
+		else {	 
+			package[k] = 1;
+		}		
+	}
+
     motor_1 = 60;												// Rotation speed of motor 1(right)
     motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
     
@@ -92,12 +115,10 @@ int main () {
 	for (int t=1; t<30000; t = t+1) {
 		IR_data = rlink.request(READ_PORT_0);	    			    // Read value from IR board
 
-		for (int k = 0; k < 4; k++) {
+		for (int k = 0; k < 7; k++) {
 			IR[k] = (IR_data & ( 1 << k )) >> k;
 		}
-
 		rlink.command (RAMP_TIME, 255);							    // Default ramp time
-		
 		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 1)) {		
 			a = 0;
 			rlink.command(MOTOR_1_GO, motor_1);					    // Line only detected in the middle
@@ -138,11 +159,17 @@ int main () {
 		}
 		
 		if ((IR[right] == 1) && (IR[left] == 1) && (IR[middle] == 1)) {
-			if (a == 0) {
+			cout << a << pick_on << endl;
+			if ((a == 0) && (pick_on == 0)) {
 				junction_no = junction_no + 1;				    	// Robot is going over a junction
                 cout << "Junction" << junction_no <<endl;
                 a = 1;
                 junction = 1;
+                
+                if (package[junction_no - 1] == 1) {
+					pick_on = pickup();
+					package[junction_no-1] = 0;
+				}
 			}
 		}
 		
@@ -163,18 +190,35 @@ int main () {
 			delay(500);	
 			lost();	
 		}
-	
+		if ((IR[back] == 1) && (pick_on == 1) /*&& (IR[trigger] == 0)*/) {
+			cout << "Rotating for pickup" << endl;			// Debugging comment
+			rlink.command(MOTOR_1_GO, 0);						// Stop the robot
+			rlink.command(MOTOR_2_GO, 0);
+			delay(500);										// Wait
+				
+			for (int t=1; t<220; t = t+1) {
+				rlink.command(MOTOR_1_GO, motor_2*1.2);					
+				rlink.command(MOTOR_2_GO, motor_2);			 	// Rotate by 90 degrees
+			}	
+			cout << "Finished pick-up rotation" << endl;
+            rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
+            rlink.command(MOTOR_2_GO, 0);
+			delay(500);	
+			lost();
+            rlink.command(MOTOR_1_GO, motor_1);                        // Stop the robot
+            rlink.command(MOTOR_2_GO, motor_2);	
+            delay(2000);
+            rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
+            rlink.command(MOTOR_2_GO, 0);		
+            cout << "done with IDP" << endl;
+            return 0;
+			pick_on = 0;	
+		}
 		
+		/*if (IR[trigger] == 1) {
+			rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
+            rlink.command(MOTOR_2_GO, 0);
+		}*/
 	}
 	
 }
-
-bool pickup(bool package, int junction_no) {
-	rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
-    rlink.command(MOTOR_2_GO, 0);
-	delay(500);
-	
-	package[junction_no] = 0;
-	return package;
-}
-

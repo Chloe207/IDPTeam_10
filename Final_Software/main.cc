@@ -1,14 +1,13 @@
 #include "robot.h"
 using namespace std;
 
-junction_no = 0;
-lost_no = 0;
-junction_detected = 0;
-debug = true;
-
-
 int main () {
-    
+    junction_no = 0;
+	lost_no = 0;
+	junction_detected = 0;
+	debug = true;
+
+
     watch.start();                                  // start timer
     
     if (!rlink.initialise (ROBOT_NUM)) {            // setup the link
