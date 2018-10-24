@@ -114,7 +114,7 @@ int pickup() {
 	watch.start();
 
 	while ((watch.read() < 1500) && (sensor1[front_switch] == 0)) {
-		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {	// Move towards the docking area
+		if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {	// Move towards the docking area
 			cout << "lost here" << endl;
 			lost_line();
 		}
@@ -141,36 +141,36 @@ int line_follow() {
 		rlink.command(MOTOR_2_GO, right_speed);
 	}
 			
-	if ((IR[right] == 1) && (IR[left] == 0) && (IR[middle] == 1)) {
+	if ((sensor1[right] == 1) && (sensor1[left] == 0) && (sensor1[middle] == 1)) {
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed);				    					// Line detected on the right i.e. robot going left
 		rlink.command(MOTOR_2_GO, 127 + left_speed * 1.80);
 	}
 			 
-	if ((IR[right] == 1) && (IR[left] == 0) && (IR[middle] == 0)) {
+	if ((sensor1[right] == 1) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed);			    						// Line only detected on the right i.e. robot has strongly deviated to the left
 		rlink.command(MOTOR_2_GO, 127 + left_speed * 2.00);
 	}		
 		 
-	if ((IR[right] == 0) && (IR[left] == 1) && (IR[middle] == 1)) {
+	if ((sensor1[right] == 0) && (sensor1[left] == 1) && (sensor1[middle] == 1)) {
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed * 1.80);			    				// Line detected on the left i.e. robot going right
 		rlink.command(MOTOR_2_GO, right_speed);
 	}
 
-	if ((IR[right] == 0) && (IR[left] == 1) && (IR[middle] == 0)) {
+	if ((sensor1[right] == 0) && (sensor1[left] == 1) && (sensor1[middle] == 0)) {
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed * 2.00);			    				// Line only detected on the left i.e. robot has stongly deviated to the right
 		rlink.command(MOTOR_2_GO, right_speed);
 	}
 		
-	if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {					// Line lost
+	if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {					// Line lost
 		a = 0;
 		lost_line();
 	}
 		
-	if ((IR[right] == 1) && (IR[left] == 1) && (IR[middle] == 1)) {
+	if ((sensor1[right] == 1) && (sensor1[left] == 1) && (sensor1[middle] == 1)) {
 		if (a == 0) {
 			junction_no = junction_no + 1;				    						// Robot is going over a junction
             cout << "Junction: " << junction_no <<endl;
@@ -179,7 +179,7 @@ int line_follow() {
 		}
 	}
 		
-	if (((IR[back] == 1) && (junction_no == 6) && (junction_detected == 1)) || ((IR[back] == 1) && (junction_no == 12) && (junction_detected== 1)) || ((IR[back] == 1) && (junction_no == 13) && (junction_detected == 1))) {     
+	if (((sensor1[back] == 1) && (junction_no == 6) && (junction_detected == 1)) || ((sensor1[back] == 1) && (junction_no == 12) && (junction_detected== 1)) || ((sensor1[back] == 1) && (junction_no == 13) && (junction_detected == 1))) {
 		turn_left();
 	}
 		

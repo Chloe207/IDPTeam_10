@@ -11,6 +11,6 @@ int package_received(void)  {
     return 0;
 }
 
-int pick_package() {
+int pickup_package() {
     
 }
