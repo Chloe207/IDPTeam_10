@@ -48,47 +48,70 @@ int lost_line () {
 	return 0;
 }
 
-void turn_left(junction_detected)  {
-	cout << "Rotating for junction" << endl;			// Debugging comment
-	rlink.command(MOTOR_1_GO, 0);						// Stop the robot
-	rlink.command(MOTOR_2_GO, 0);
-	delay(500);										// Wait
-		
-	for (int t=1; t<260; t = t+1) {
-		rlink.command(MOTOR_1_GO, left_speed);
-		rlink.command(MOTOR_2_GO, left_speed*1.2);			 	// Rotate by 90 degrees
-	}	
-	junction_detected = 0;
-	cout << "Finished rotation" << endl;
-    rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
+void turn_left()  {
+    
+    rlink.command(MOTOR_1_GO, 0);                                        // Stop the robot
     rlink.command(MOTOR_2_GO, 0);
-	delay(500);	
-	lost_line();
+    delay(500);
+    cout << "Turning left" << endl;                            // Start the rotation towards the pick-up point
+    watch.start();
+    while (watch.read() < 1820) {
+        rlink.command(MOTOR_1_GO, left_speed);
+        rlink.command(MOTOR_2_GO, left_speed*1.2);                                 // Rotate by 90 degrees
+        delay(0.1);
+    }
+    
+    cout << "Finished rotation" << endl;
+    rlink.command(MOTOR_1_GO, 0);                                        // Stop the robot
+    rlink.command(MOTOR_2_GO, 0);
+    delay(500);
+    
+    watch.stop();
+    watch.start();
+    
+    while (watch.read() < 300) {
+        rlink.command(MOTOR_1_GO, left_speed);                                // Move forward a little (this is needed otherwise lost_line() does not work)
+        rlink.command(MOTOR_2_GO, right_speed);
+        delay(0.1);
+    }
+    
+    watch.stop();
+}
+
+void turn_right() {
+    
+    rlink.command(MOTOR_1_GO, 0);                                        // Stop the robot
+    rlink.command(MOTOR_2_GO, 0);
+    delay(500);
+    cout << "Turning right" << endl;                            // Start the rotation towards the pick-up point
+    watch.start();
+    while (watch.read() < 1820) {
+        rlink.command(MOTOR_1_GO, right_speed*1.2);
+        rlink.command(MOTOR_2_GO, right_speed);                                 // Rotate by 90 degrees
+        delay(0.1);
+    }
+    
+    cout << "Finished rotation" << endl;
+    rlink.command(MOTOR_1_GO, 0);                                        // Stop the robot
+    rlink.command(MOTOR_2_GO, 0);
+    delay(500);
+    
+    watch.stop();
+    watch.start();
+    
+    while (watch.read() < 300) {
+        rlink.command(MOTOR_1_GO, left_speed);                                // Move forward a little (this is needed otherwise lost_line() does not work)
+        rlink.command(MOTOR_2_GO, right_speed);
+        delay(0.1);
+    }
+    
+    watch.stop();
 }
 
 int pickup() {
-	rlink.command(MOTOR_1_GO, 0);										// Stop the robot
-	rlink.command(MOTOR_2_GO, 0);
-	delay(500);															
-	cout << "Start pick-up rotation" << endl;							// Start the rotation towards the pick-up point
-	watch.start();
-	while (watch.read() < 1820) { 
-		rlink.command(MOTOR_1_GO, right_speed*1.2);
-		rlink.command(MOTOR_2_GO, right_speed);			 					// Rotate by 90 degrees
-		delay(0.1);		
-	}
-	cout << "Finished pick-up rotation" << endl;
-    rlink.command(MOTOR_1_GO, 0);                        				// Stop the robot
-    rlink.command(MOTOR_2_GO, 0);
-	delay(500);	
-	watch.stop();
-	watch.start();
-	while (watch.read() < 300) { 
-		rlink.command(MOTOR_1_GO, left_speed);                        		// Move forward a little (this is needed otherwise lost_line() does not work)
-		rlink.command(MOTOR_2_GO, right_speed);
-		delay(0.1);
-	}
-	watch.stop();
+    
+    turn_right();
+    
 	watch.start();
 	while (watch.read() < 1500) {
 		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {	// Move towards the docking area, this will need to be changed when the switch is functional
@@ -103,7 +126,9 @@ int pickup() {
 	rlink.command(MOTOR_1_GO, 0);                        				// Stop the robot, this will be when the switch is activated
     rlink.command(MOTOR_2_GO, 0);		
     cout << "At package pick-up" << endl;
-    return 0;	       													// Disable the pick up option, remember to name this pick-on later		
+    
+    
+    return 0;
 }
 
 
