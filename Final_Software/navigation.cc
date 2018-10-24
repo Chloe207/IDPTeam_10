@@ -13,10 +13,8 @@ void rth(void)  {
 }
 
 int lost () {
+    int a;
 
-	left_speed = 60;												// Rotation speed of motor 1(right)
-    right_speed = 127 + left_speed;									// Rotation speed of motor 2 to go straight (left)
-		
 		if (a < 20) {
 			if (IR[middle] == 1) {
 				return 0;
@@ -46,7 +44,6 @@ int lost () {
 				rlink.command(MOTOR_2_GO, left_speed);			 			// Reverse
 			}
 		}
-	}
 	return 0;
 }
 

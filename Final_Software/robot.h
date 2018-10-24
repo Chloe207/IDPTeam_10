@@ -21,7 +21,7 @@ using namespace std;
 
 int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow();
 
-bool IR[4], debug, junction_detected;
+bool IR[4], debug, junction_detected, package[10];
 
 void turn_left(), turn_right(), turn_around(), rth(), junction(), pickup(), dropoff();
 
@@ -30,7 +30,7 @@ robot_link rlink;                      // datatype for the robot link
 stopwatch watch;                       // setup watch
 
 extern int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow();
-extern bool IR[4], debug, junction_detected;
+extern bool IR[4], debug, junction_detected, package[10];
 extern void turn_left(), turn_right(), turn_around(), rth(), junction(), pickup(), dropoff();
 extern robot_link rlink;
 extern stopwatch watch;
