@@ -2,12 +2,11 @@
 #include "robot.h"
 //#endif
 
-
-
 void turn_around(void)  {
-    
+    watch.start();
+    while (watch.read() < 1820) {
 }
-
+}
 
 void rth(void)  {
 }
