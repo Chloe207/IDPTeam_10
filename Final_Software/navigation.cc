@@ -1,24 +1,8 @@
-//#ifndef robot
-//#include "robot.h"
+//#ifndef ROBOT_NUM
+#include "robot.h"
 //#endif
-#include <iostream>
-#include <robot_instr.h>
-#include <robot_link.h>
-#include <stdlib.h>     //for using the function sleep
-#include <stdio.h>
-#include <time.h>
-#include <unistd.h>
-#include <stopwatch.h>
-#include <robot_delay.h>
-#include <cmath>
 
-#define ROBOT_NUM 14   // The id number (see below)
-#define middle 0
-#define left 1
-#define back 2
-#define right 3
-using namespace std;
-robot_link rlink; 
+
 
 void turn_around(void)  {
     
@@ -116,14 +100,46 @@ void junction_r(int junction)  {
 	lost();			
 }
 
-bool pickup(bool package[10], int junction_no) {
-	rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
+int pickup() {
+	rlink.command(MOTOR_1_GO, 0);										// Stop the robot
+	rlink.command(MOTOR_2_GO, 0);
+	delay(500);															
+	cout << "Start pick-up rotation" << endl;							// Start the rotation towards the pick-up point
+	watch.start();
+	while (watch.read() < 1820) { 
+		rlink.command(MOTOR_1_GO, motor_2*1.2);					
+		rlink.command(MOTOR_2_GO, motor_2);			 					// Rotate by 90 degrees
+		delay(0.1);		
+	}
+	cout << "Finished pick-up rotation" << endl;
+    rlink.command(MOTOR_1_GO, 0);                        				// Stop the robot
     rlink.command(MOTOR_2_GO, 0);
-	delay(500);
-	
-	package[junction_no] = 0;
-	return package;
+	delay(500);	
+	watch.stop();
+	watch.start();
+	while (watch.read() < 300) { 
+		rlink.command(MOTOR_1_GO, motor_1);                        		// Move forward a little (this is needed otherwise lost() does not work) 
+		rlink.command(MOTOR_2_GO, motor_2);	
+		delay(0.1);
+	}
+	watch.stop();
+	watch.start();
+	while (watch.read() < 1500) {
+		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {	// Move towards the docking area, this will need to be changed when the switch is functional
+			cout << "lost here" << endl;
+			lost();
+		}
+		else { 
+			rlink.command(MOTOR_1_GO, motor_1);                    		// If not lost, just move forward    
+			rlink.command(MOTOR_2_GO, motor_2);	
+		}
+	}
+	rlink.command(MOTOR_1_GO, 0);                        				// Stop the robot, this will be when the switch is activated
+    rlink.command(MOTOR_2_GO, 0);		
+    cout << "At package pick-up" << endl;
+    return 0;	       													// Disable the pick up option, remember to name this pick-on later		
 }
+
 
 int line_follow() {
 	int IR_data,motor_1,motor_2,a;		        				// Data from IR sensors

@@ -19,19 +19,19 @@ using namespace std;
 #define right 3
 #define ramp_speed 255
 
-int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received();
+int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow();
 
 bool IR[4], debug, junction_detected;
 
-void turn_left(), turn_right(), turn_around(), rth(), junction(), line_follow(), pickup(), dropoff();
+void turn_left(), turn_right(), turn_around(), rth(), junction(), pickup(), dropoff();
 
 robot_link rlink;                      // datatype for the robot link
 
 stopwatch watch;                       // setup watch
 
-extern int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received();
+extern int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow();
 extern bool IR[4], debug, junction_detected;
-extern void turn_left(), turn_right(), turn_around(), rth(), junction(), line_follow(), pickup(), dropoff();
+extern void turn_left(), turn_right(), turn_around(), rth(), junction(), pickup(), dropoff();
 extern robot_link rlink;
 extern stopwatch watch;
 

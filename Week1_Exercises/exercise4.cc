@@ -22,7 +22,7 @@ if (!rlink.initialise (ROBOT_NUM)) { // setup the link
 val = rlink.request (TEST_INSTRUCTION); // send test instruction
 if (val == TEST_INSTRUCTION_RESULT) {   // check result
  // rlink.command(WRITE_PORT_3, 3);
-  int v=rlink.request (READ_PORT_3);
+  int v=rlink.request (READ_PORT_0);
   cout << "Value="  <<v << endl;
   cout << "Test passed" << endl;
   return 0;                            // all OK, finish
