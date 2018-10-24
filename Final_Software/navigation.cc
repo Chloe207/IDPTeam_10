@@ -112,8 +112,10 @@ int pickup() {
     turn_right();																	// Turn right towards the pickup area
     
 	watch.start();
-	while ((watch.read() < 1500) && (sensor1[front_switch]) == 0) {
-		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {				// Move towards the docking area
+
+	while ((watch.read() < 1500) && (sensor1[front_switch] == 0)) {
+		if ((IR[right] == 0) && (IR[left] == 0) && (IR[middle] == 0)) {	// Move towards the docking area
+			cout << "lost here" << endl;
 			lost_line();
 		}
 		else { 
@@ -125,6 +127,7 @@ int pickup() {
     rlink.command(MOTOR_2_GO, 0);		
     delay(100);
     cout << "At package pick-up" << endl;
+    pickup_package();
     return 1;
 }
 

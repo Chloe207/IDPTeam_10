@@ -10,3 +10,7 @@ int package_type(void)  {
 int package_received(void)  {
     return 0;
 }
+
+int pick_package() {
+    
+}
