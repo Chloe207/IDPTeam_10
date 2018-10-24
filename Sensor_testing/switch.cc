@@ -33,9 +33,8 @@ int main () {
 
 		for (int k = 0; k < 7; k++) {
 			IR[k] = (IR_data & ( 1 << k )) >> k;
-			if (k == 7) {
-				cout << IR[k] << endl;
-			}
+			cout << IR[k] << endl;
+			
 		}
 	}
 	return 0;
