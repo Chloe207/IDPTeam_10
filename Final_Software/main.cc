@@ -11,8 +11,11 @@ int main () {
     
     left_speed = 60;                                    // Rotation speed of motor 1(right)
     right_speed = 127 + left_speed;                     // Rotation speed of motor 2 to go straight (left)
-
-
+    
+    for (int k = 0; k < 10; k++) {                      // All stations have packages
+        package[k] = 1;
+    }
+    
     watch.start();                                      // start timer
     
     if (!rlink.initialise (ROBOT_NUM)) {                // setup the link
