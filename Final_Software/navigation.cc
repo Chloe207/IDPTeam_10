@@ -13,6 +13,7 @@ void rth(void)  {
 }
 
 int lost_line () {
+	//cout << "Lost line" << endl;
     watch.start();
     if (watch.read() < 200) {														// For 200ms, if line is lost, rotate to the left
 		if (sensor1[middle] == 1) {
@@ -106,6 +107,7 @@ void turn_right() {
 }
 
 int pickup() {
+	cout << "Picking up" << endl;
     turn_right();																	// Turn right towards the pickup area
     
 	watch.start();
@@ -132,38 +134,44 @@ int pickup() {
 
 int line_follow() {
 	int a;		        															// Used to not read the same junction multiple times
-    	
-	if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 1)) {		
+        
+	if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 1)) {	
+		cout << "Middle" << endl;	
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed);					    				// Line only detected in the middle
 		rlink.command(MOTOR_2_GO, right_speed);
 	}
 			
 	if ((sensor1[right] == 1) && (sensor1[left] == 0) && (sensor1[middle] == 1)) {
+		cout << "Right" << endl;
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed);				    					// Line detected on the right i.e. robot going left
 		rlink.command(MOTOR_2_GO, 127 + left_speed * 1.80);
 	}
 			 
 	if ((sensor1[right] == 1) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {
+		cout << "Very right" << endl;
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed);			    						// Line only detected on the right i.e. robot has strongly deviated to the left
 		rlink.command(MOTOR_2_GO, 127 + left_speed * 2.00);
 	}		
 		 
 	if ((sensor1[right] == 0) && (sensor1[left] == 1) && (sensor1[middle] == 1)) {
+		cout << "Left" << endl;
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed * 1.80);			    				// Line detected on the left i.e. robot going right
 		rlink.command(MOTOR_2_GO, right_speed);
 	}
 
 	if ((sensor1[right] == 0) && (sensor1[left] == 1) && (sensor1[middle] == 0)) {
+		cout << "Very left" << endl;
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed * 2.00);			    				// Line only detected on the left i.e. robot has stongly deviated to the right
 		rlink.command(MOTOR_2_GO, right_speed);
 	}
 		
 	if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {					// Line lost
+		cout << "Lost" << endl;
 		a = 0;
 		lost_line();
 	}
@@ -178,10 +186,12 @@ int line_follow() {
 	}
 		
 	if (((sensor1[back] == 1) && (junction_no == 6) && (junction_detected == 1)) || ((sensor1[back] == 1) && (junction_no == 12) && (junction_detected== 1)) || ((sensor1[back] == 1) && (junction_no == 13) && (junction_detected == 1))) {
+		cout << "This is an angle" << endl;
 		turn_left();
 	}
-		
+	
 	if (package[junction_no] == 1) {
+		cout << "This junction has a package" << endl;
 		pickup();
 	}
 	return 0;

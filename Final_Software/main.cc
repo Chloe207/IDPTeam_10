@@ -7,29 +7,48 @@ void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff();
 robot_link rlink;                      					// datatype for the robot link
 stopwatch watch;                       					// setup watch
 
+void error() {
+	int stat;
+	if (rlink.fatal_err()) { 							// check for errors
+		rlink.print_errs(); 							// print them out
+		rlink.reinitialise(); 							// flush the link
+	}
+	if (watch.read() > 300000) {
+		//rlink.command (SHUTDOWN ROBOT, 0) 				// If the robot has been running for too long, switch everything off
+		stat = rlink.request (STATUS); 					// Returns the contents of  the microprocessor's general status register
+		cout << stat << endl;
+	}
+	
+	rlink.command (STOP_IF_HIGH, 0x377);
+	rlink.command (STOP_SELECT, 0);	
+}
+	
+
 int main () {
     junction_no = 0;									// Junction number									
 	junction_detected = 0;
     
     left_speed = 60;                                    // Rotation speed of motor 1(right)
     right_speed = 127 + left_speed;                     // Rotation speed of motor 2 to go straight (left)
+    rlink.command (RAMP_TIME, ramp_speed);
     
     for (int k = 0; k < 10; k++) {                      // All stations have packages
-        package[k] = 1;
+		if (k<=2) {
+			package[k] = 0;
+		}
+		else {
+			package[k] = 1;
+		}
     }
-    
-    watch.start();                                      // start timer
-    
+        
     if (!rlink.initialise (ROBOT_NUM)) {                // setup the link
         cout << "Cannot initialise link" << endl;
         rlink.print_errs("  ");
         return -1;
     }
-    
-    rlink.command (RAMP_TIME, ramp_speed);
 
-    while (watch.read() < 30000) {                      // loop while watch less than 5mins
-        
+    for (int t=1; t< 300000; t = t+1) {                      // loop while watch less than 5mins
+		error();       
         board_0 = rlink.request(READ_PORT_0);           // Read from board 0
         board_1 = rlink.request(READ_PORT_1);           // Read from board 1
         
