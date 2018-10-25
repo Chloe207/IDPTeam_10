@@ -100,7 +100,7 @@ int main () {
 		}		
 	}*/
 
-    motor_1 = 60;												// Rotation speed of motor 1(right)
+    motor_1 = 70;												// Rotation speed of motor 1(right)
     motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
     
 	if (!rlink.initialise (ROBOT_NUM)) { 						// Setup the link
