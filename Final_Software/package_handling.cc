@@ -1,16 +1,14 @@
-#ifndef ROBOT_H
-#define ROBOT_H
 #include "robot.h"
-#endif
 
-int package_type(void)  {
+
+int package_type()  {
     return 0;
 }
 
-int package_received(void)  {
+int package_received()  {
     return 0;
 }
 
 int pickup_package() {
-    
+    return 0;
 }

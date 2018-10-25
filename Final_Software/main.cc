@@ -1,12 +1,14 @@
-#ifndef ROBOT_H
-#define ROBOT_H
 #include "robot.h"
-#endif
 
+int board_0, board_1, left_speed, right_speed, junction_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line(), pickup_package();
+bool sensor1[7], sensor2[7], junction_detected, package[10];
+void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff();
+	
+robot_link rlink;                      					// datatype for the robot link
+stopwatch watch;                       					// setup watch
 
 int main () {
-    junction_no = 0;
-	lost_no = 0;
+    junction_no = 0;									// Junction number									
 	junction_detected = 0;
     
     left_speed = 60;                                    // Rotation speed of motor 1(right)
