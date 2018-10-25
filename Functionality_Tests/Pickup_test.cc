@@ -1,8 +1,28 @@
-#include "robot.h"
+// Unit test for pickup
+
+#include "Pickup_test.h"
 
 
-int package_type()  {
-    int val_white, val_blue;
+int pickup_package() {
+    
+    if (!rlink.initialise (ROBOT_NUM)) {                // setup the link
+        cout << "Cannot initialise link" << endl;
+        rlink.print_errs("  ");
+        return -1;
+    }
+    
+    rlink.command(MOTOR_3_GO, 30);                  // Lift up
+    delay(50);
+    rlink.command(MOTOR_3_GO, 10);
+    delay(500);
+    rlink.command(WRITE_PORT_1, push_actuator);     // Push actuator forward whilst remaining up
+    delay(500);
+    rlink.command(MOTOR_3_GO, 0);                   // Drop box whilst remaining forwards
+    delay(500);
+    rlink.command(WRITE_PORT_1, 0);                 // Pull back while down
+    delay(500);
+        
+    cout << "Picked up package" << endl;
     
     cout << "Determining package colour" << endl;
     
@@ -25,29 +45,5 @@ int package_type()  {
     if(val_white < 30 && val_blue < 30) {
         rlink.command(WRITE_PORT_1, GREEN);
     }
-    
     return 0;
 }
-
-int package_received()  {
-    return 0;
-}
-
-int pickup_package() {
-    rlink.command(MOTOR_3_GO, 30);                  // Lift up
-    delay(50);
-    rlink.command(MOTOR_3_GO, 10);
-    delay(500);
-    rlink.command(WRITE_PORT_1, push_actuator);     // Push actuator forward whilst remaining up
-    delay(500);
-    rlink.command(MOTOR_3_GO, 0);                   // Drop box whilst remaining forwards
-    delay(500);
-    rlink.command(WRITE_PORT_1, 0);                 // Pull back while down
-    delay(500);
-    
-    cout << "Picked up package" << endl;
-    
-    package_type();                                 // Determine package type
-    return 0;
-}
-

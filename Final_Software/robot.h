@@ -13,13 +13,33 @@ using namespace std;
 #include <cmath>
 
 #define ROBOT_NUM 14   // The id number (see below)
+
+// Board_0 pin allocations
 #define middle 0
 #define left 1
 #define back 2
 #define right 3
-#define white 4
-#define blue 5
+#define white_LED 16  // Value to write white LED
+#define blue_LED 32   // Value to write blue LED
 #define front_switch 6
+
+// Board_1 pin allocations
+#define multi_parcel 8
+#define delivery_indicator 16
+#define lift_actuator 32
+#define push_actuator 64
+
+// Package indicators
+#define RED 1
+#define GREEN 2
+#define WHITE 3
+#define WOOD 4
+#define TRANSPARENT 5
+
+// ADC allocations
+#define light_sensor ADC4
+#define dist_sensor ADC3
+
 #define ramp_speed 255
 
 extern int board_0, board_1, left_speed, right_speed, junction_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line(), pickup_package();
