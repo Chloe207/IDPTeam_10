@@ -22,28 +22,11 @@ using namespace std;
 #define front_switch 6
 #define ramp_speed 255
 
-int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line(), pickup_package();
-
-bool sensor1[7], sensor2[7], junction_detected, package[10];
-
-void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff();
-
-robot_link rlink;                      // datatype for the robot link
-
-stopwatch watch;                       // setup watch
-
-
-extern int board_0, board_1, left_speed, right_speed, junction_no, lost_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line(), pickup_package();
+extern int board_0, board_1, left_speed, right_speed, junction_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line(), pickup_package();
 extern bool sensor1[7], sensor2[7], junction_detected, package[10];
 extern void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff();
 extern robot_link rlink;
 extern stopwatch watch;
-
-
-
-
-
-
 
 // Create classes
 /*class junction {

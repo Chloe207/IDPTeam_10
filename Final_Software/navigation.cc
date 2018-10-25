@@ -1,7 +1,4 @@
-#ifndef ROBOT_H
-#define ROBOT_H
 #include "robot.h"
-#endif
 
 void turn_around(void)  {
     watch.start();
@@ -112,7 +109,6 @@ int pickup() {
     turn_right();																	// Turn right towards the pickup area
     
 	watch.start();
-
 	while ((watch.read() < 1500) && (sensor1[front_switch] == 0)) {
 		if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {	// Move towards the docking area
 			cout << "lost here" << endl;
@@ -123,6 +119,8 @@ int pickup() {
 			rlink.command(MOTOR_2_GO, right_speed);
 		}
 	}
+	watch.stop();
+	
 	rlink.command(MOTOR_1_GO, 0);                        							// Stop the robot, this will be when the switch is activated
     rlink.command(MOTOR_2_GO, 0);		
     delay(100);
