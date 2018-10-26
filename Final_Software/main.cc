@@ -1,6 +1,6 @@
 #include "robot.h"
 
-int board_0, board_1, left_speed, right_speed, junction_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line(), pickup_package();
+int a,board_0, board_1, left_speed, right_speed, junction_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line(), pickup_package();
 bool sensor1[7], sensor2[7], junction_detected, package[10];
 void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff();
 	
@@ -33,12 +33,12 @@ int main () {
     rlink.command (RAMP_TIME, ramp_speed);
     
     for (int k = 0; k < 10; k++) {                      // All stations have packages
-		if (k<=2) {
+		/*if (k<=) {
 			package[k] = 0;
-		}
-		else {
-			package[k] = 1;
-		}
+		}*/
+		//else {
+			package[k] = 0;
+		//}
     }
         
     if (!rlink.initialise (ROBOT_NUM)) {                // setup the link
@@ -57,7 +57,7 @@ int main () {
             sensor2[k] = (board_1 & ( 1 << k )) >> k;
         }
         
-        sensor1[front_switch] = -sensor1[front_switch]; // Invert switch input
+        //sensor1[front_switch] = -sensor1[front_switch]; // Invert switch input
         
         line_follow();
         

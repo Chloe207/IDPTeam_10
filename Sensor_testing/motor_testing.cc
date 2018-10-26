@@ -23,8 +23,8 @@ if (!rlink.initialise (ROBOT_NUM)) { // setup the link
 
 val = rlink.request (TEST_INSTRUCTION); // send test instruction
 if (val == TEST_INSTRUCTION_RESULT) {   // check result
-rlink.command(MOTOR_1_GO, 127);
-rlink.command(MOTOR_2_GO, 255);
+
+rlink.command(MOTOR_3_GO, 100);
 //rlink.command(MOTOR_3_GO, 127);
 //rlink.command(MOTOR_4_GO, 127);
 rlink.command (RAMP_TIME, 255);			// default ramp time

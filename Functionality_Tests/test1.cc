@@ -46,7 +46,7 @@ int lost () {
 	motor_1 = 60;												// Rotation speed of motor 1(right)
     motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
     
-    for (int a = 1; a < 50; a = a + 1) {
+    for (int a = 1; a < 100; a = a + 1) {
 		IR_data = rlink.request(READ_PORT_0);	    			    // Read value from IR board
 		
 		for (int k = 0; k < 7; k++) {
@@ -63,17 +63,17 @@ int lost () {
 			}
 		}
     
-		if ((a < 40) && (a > 20)) {
+		if ((a < 80) && (a > 20)) {
 			if (IR[middle] == 1) {
 				return 0;
 			}
 			else {
 				rlink.command(MOTOR_1_GO, motor_1 * 0.8);
-				rlink.command(MOTOR_2_GO, motor_2);			 	        // Rotate to the right
+				rlink.command(MOTOR_2_GO, motor_2*1.3);			 	        // Rotate to the right
 			}
 		}
     
-		if (a > 40) { 
+		if (a > 80) { 
 			if (IR[middle] == 1) {
 				return 0;
 			}
@@ -102,7 +102,7 @@ int main () {
 
     motor_1 = 70;												// Rotation speed of motor 1(right)
     motor_2 = 127 + motor_1;									// Rotation speed of motor 2 to go straight (left)
-    
+    rlink.reinitialise(); 
 	if (!rlink.initialise (ROBOT_NUM)) { 						// Setup the link
 		cout << "Cannot initialise link" << endl;
 		rlink.print_errs("  ");

@@ -13,7 +13,7 @@ void rth(void)  {
 }
 
 int lost_line () {
-	//cout << "Lost line" << endl;
+	cout << "Lost line" << endl;
     watch.start();
     if (watch.read() < 200) {														// For 200ms, if line is lost, rotate to the left
 		if (sensor1[middle] == 1) {
@@ -127,16 +127,15 @@ int pickup() {
     rlink.command(MOTOR_2_GO, 0);		
     delay(100);
     cout << "At package pick-up" << endl;
-    pickup_package();
+    //pickup_package();
     return 1;
 }
 
 
 int line_follow() {
-	int a;		        															// Used to not read the same junction multiple times
-        
+
 	if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 1)) {	
-		cout << "Middle" << endl;	
+		//cout << "Middle" << endl;	
 		a = 0;
 		rlink.command(MOTOR_1_GO, left_speed);					    				// Line only detected in the middle
 		rlink.command(MOTOR_2_GO, right_speed);
@@ -177,6 +176,8 @@ int line_follow() {
 	}
 		
 	if ((sensor1[right] == 1) && (sensor1[left] == 1) && (sensor1[middle] == 1)) {
+		a = 0;
+		cout << a << endl;
 		if (a == 0) {
 			junction_no = junction_no + 1;				    						// Robot is going over a junction
             cout << "Junction: " << junction_no <<endl;
@@ -191,6 +192,7 @@ int line_follow() {
 	}
 	
 	if (package[junction_no] == 1) {
+		cout << package[junction_no] << endl;
 		cout << "This junction has a package" << endl;
 		pickup();
 	}
@@ -204,5 +206,3 @@ void dropoff()   {
 int parcel_num(int) {
     return 0;
 }
-
-

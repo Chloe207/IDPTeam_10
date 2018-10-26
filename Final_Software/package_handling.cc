@@ -2,7 +2,7 @@
 
 
 int package_type()  {
-    int val_white, val_blue;
+    /*int val_white, val_blue;
     
     cout << "Determining package colour" << endl;
     
@@ -16,7 +16,7 @@ int package_type()  {
     rlink.command(WRITE_PORT_0, blue_LED);                 // Turn on blue LED
     delay(100);
     val_blue = rlink.request(light_sensor);         // Read sensor
-    delay(100)
+    delay(100);
     rlink.command(WRITE_PORT_0, 0);                 // Turn off blue LED
     
     cout << "White: " << val_white << endl;
@@ -24,7 +24,7 @@ int package_type()  {
     
     if(val_white < 30 && val_blue < 30) {
         rlink.command(WRITE_PORT_1, GREEN);
-    }
+    }*/
     
     return 0;
 }
