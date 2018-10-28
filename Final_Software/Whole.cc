@@ -60,42 +60,6 @@ void turn_around(void)  {
 void rth(void)  {
 }
 
-int lost_line () {
-	cout << "Lost line" << endl;
-    watch.start();
-    if (watch.read() < 200) {														// For 200ms, if line is lost, rotate to the left
-		if (sensor1[middle] == 1) {
-			return 0;
-		}
-		else {
-			rlink.command(MOTOR_1_GO, left_speed);
-			rlink.command(MOTOR_2_GO, right_speed * 0.8);			 				// Rotate to the left
-			delay(0.1);
-		}
-	}
-	
-    if ((watch.read() < 400) && (watch.read() > 200)) {								// If the above does not work, rotate back in for 200ms and rotate right for 200ms
-		if (sensor1[middle] == 1) {
-			return 0;
-		}
-		else {
-			rlink.command(MOTOR_1_GO, left_speed * 0.8);
-			rlink.command(MOTOR_2_GO, right_speed);			 	        			// Rotate to the right
-		}
-	}
-    
-	if ((watch.read() < 800) && (watch.read() > 400)) { 							// For 400ms try moving backwards
-		if (sensor1[middle] == 1) {
-				return 0;
-		}
-		else {
-			rlink.command(MOTOR_1_GO, right_speed);
-			rlink.command(MOTOR_2_GO, left_speed);			 						// Reverse
-		}
-	}
-	return 0;
-}
-
 void turn_left()  {
     rlink.command(MOTOR_1_GO, 0);                                        			// Stop the robot and wait (stabilise)
     rlink.command(MOTOR_2_GO, 0);
@@ -153,6 +117,42 @@ void turn_right() {
     } 
     watch.stop();
     package_on = 0;
+}
+
+int lost_line() {
+	cout << "Lost line" << endl;
+	watch.start();
+	if (watch.read() < 200) {														// For 200ms, if line is lost, rotate to the left
+		if (sensor1[middle] == 1) {
+			return 0;
+		}
+		else {
+			rlink.command(MOTOR_1_GO, left_speed);
+			rlink.command(MOTOR_2_GO, right_speed * 0.8);			 				// Rotate to the left
+			delay(0.1);
+		}
+	}
+
+	if ((watch.read() < 400) && (watch.read() > 200)) {								// If the above does not work, rotate back in for 200ms and rotate right for 200ms
+		if (sensor1[middle] == 1) {
+			return 0;
+		}
+		else {
+			rlink.command(MOTOR_1_GO, left_speed * 0.8);
+			rlink.command(MOTOR_2_GO, right_speed);			 	        			// Rotate to the right
+		}
+	}
+
+	if ((watch.read() < 800) && (watch.read() > 400)) { 							// For 400ms try moving backwards
+		if (sensor1[middle] == 1) {
+			return 0;
+		}
+		else {
+			rlink.command(MOTOR_1_GO, right_speed);
+			rlink.command(MOTOR_2_GO, left_speed);			 						// Reverse
+		}
+	}
+	return 0;
 }
 
 int pickup() {
