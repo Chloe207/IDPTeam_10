@@ -14,7 +14,7 @@ void error() {
 		rlink.reinitialise(); 							// flush the link
 	}
 	if (watch.read() > 300000) {
-		//rlink.command (SHUTDOWN ROBOT, 0) 				// If the robot has been running for too long, switch everything off
+        rlink.command (SHUTDOWN_ROBOT, 0); 			    // If the robot has been running for too long, switch everything off
 		stat = rlink.request (STATUS); 					// Returns the contents of  the microprocessor's general status register
 		cout << stat << endl;
 	}

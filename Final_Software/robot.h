@@ -48,7 +48,7 @@ extern void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff
 extern robot_link rlink;
 extern stopwatch watch;
 
-// Create classes
+// Create classes (unused)
 /*class junction {
     
     // Access Specifier

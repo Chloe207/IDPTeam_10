@@ -164,7 +164,7 @@ int pickup_package() {
     cout << "Picked up package" << endl;
     dropoff();
     return 0;
-}
+
 
 int pickup() {
 	cout << "Picking up" << endl;
