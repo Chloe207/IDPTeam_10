@@ -1,3 +1,3 @@
 # Automatically generated Makefile
-switch : switch.cc 
-	 g++ -ansi -Wall -g -I/export/teach/1BRobot -L/export/teach/1BRobot switch.cc -o switch -lrobot
+acctuator_testing : acctuator_testing.cc 
+	 g++ -ansi -Wall -g -I/export/teach/1BRobot -L/export/teach/1BRobot acctuator_testing.cc -o acctuator_testing -lrobot

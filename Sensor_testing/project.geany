@@ -1,13 +1,13 @@
 [project]
-name=switch
+name=acctuator_testing
 base_path=/homes/cmlc3/IDPTeam_10/Sensor_testing
 make_in_base_path=true
 description=1B IDP
-run_cmd=./switch
+run_cmd=./acctuator_testing
 
 [files]
 current_page=0
-FILE_NAME_0=0;C++;0;EUTF-8;1;1;0;switch.cc;0;4
+FILE_NAME_0=694;C++;0;EUTF-8;1;1;0;%2Fhomes%2Fcmlc3%2FIDPTeam_10%2FSensor_testing%2Facctuator_testing.cc;0;4
 
 [indentation]
 indent_width=4
