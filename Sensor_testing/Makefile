@@ -1,3 +1,3 @@
 # Automatically generated Makefile
-acctuator_testing : acctuator_testing.cc 
-	 g++ -ansi -Wall -g -I/export/teach/1BRobot -L/export/teach/1BRobot acctuator_testing.cc -o acctuator_testing -lrobot
+motor_testing : motor_testing.cc 
+	 g++ -ansi -Wall -g -I/export/teach/1BRobot -L/export/teach/1BRobot motor_testing.cc -o motor_testing -lrobot

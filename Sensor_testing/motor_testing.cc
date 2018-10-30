@@ -11,6 +11,7 @@ using namespace std;
 #include <robot_delay.h>
 #define ROBOT_NUM 14   // The id number (see below)
 
+stopwatch watch;                       					// setup watch
 
 int main () {
 int val;                              // data from microprocessor
@@ -23,13 +24,23 @@ if (!rlink.initialise (ROBOT_NUM)) { // setup the link
 
 val = rlink.request (TEST_INSTRUCTION); // send test instruction
 if (val == TEST_INSTRUCTION_RESULT) {   // check result
-
-rlink.command(MOTOR_3_GO, 100);
-//rlink.command(MOTOR_3_GO, 127);
-//rlink.command(MOTOR_4_GO, 127);
-rlink.command (RAMP_TIME, 255);			// default ramp time
-
-delay(3000);
+	watch.start();
+	while (watch.read() < 3000) {
+		rlink.command(MOTOR_3_GO, 110);
+		delay(0.1);
+	}
+	while ((watch.read() < 3100) && (watch.read() > 3000))  {
+		rlink.command(WRITE_PORT_1, 64+32);     // Push actuator forward whilst remaining up
+		delay(0.1);
+    }
+    delay(2000);
+    while ((watch.read() < 6100)&&(watch.read() > 3100)) {
+		rlink.command(MOTOR_3_GO, 238);
+		delay(0.1);
+	}
+	watch.stop();
+    rlink.command(WRITE_PORT_1, 0);                 // Pull back while down
+    delay(500);
 
 rlink.command(MOTOR_1_GO, 0);
 rlink.command(MOTOR_2_GO, 0);
