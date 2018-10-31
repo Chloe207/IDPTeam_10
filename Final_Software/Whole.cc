@@ -164,7 +164,7 @@ void turn_right() {
     delay(300);                       					// Start the rotation to the right
     
     watch5.start();
-    while (watch5.read() < 1940) {
+    while (watch5.read() < 1960) {
         rlink.command(MOTOR_1_GO, right_speed*1.2);
         rlink.command(MOTOR_2_GO, right_speed);                                 	// Rotate by 90 degrees to the right
         delay(0.1);
@@ -185,6 +185,7 @@ void turn_right() {
 }
 
 void dropoff()   {
+	cout << "Dropping off" << endl;
 	stopwatch watch6;
 	watch6.start();
 	while (watch6.read() < 1000) {
@@ -197,6 +198,7 @@ void dropoff()   {
 			break;
 		}
 		if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 1)) {	
+			cout << "Moving back" << endl;
 			b = 0;
 			rlink.command(MOTOR_1_GO, right_speed);					    				// Line only detected in the middle
 			rlink.command(MOTOR_2_GO, left_speed);
@@ -322,10 +324,11 @@ void pickup() {
 		cout << "start stopwatch" << endl;
 		watch9.start();
 		
-		while (watch9.read() < 1200) {
+		while (watch9.read() < 1400) {
 			cout << watch.read() << endl;
 			//cout << "pickup 2 " << endl;
 			read_sensors();
+			cout << rlink.request(dist_sensor) << endl;         // Read dist sensor
 			if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {
 				lost_line();
 				rlink.command(MOTOR_1_GO, left_speed);                        

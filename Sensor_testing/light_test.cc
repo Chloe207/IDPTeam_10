@@ -1,11 +1,11 @@
 #include "robot.h"
 
 
-int package_type() {
+int main() {
 	int val_white, val_blue;
     
     cout << "Press enter to begin test..." << endl;
-    //if(cin.get() == 1) {
+    if(cin.get() == 1) {
     
     cout << "Testing" << endl;
     
@@ -25,5 +25,8 @@ int package_type() {
     cout << "White: " << val_white << endl;
     cout << "Blue: " << val_blue << endl;
     return 0;
-    //}
+    }
+    else {
+		delay(10);
+	}
 }
