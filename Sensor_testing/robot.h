@@ -41,11 +41,11 @@ using namespace std;
 #define dist_sensor ADC3
 
 #define ramp_speed 255
-/*
+
 int again, with_package, lost_line_reverse(),back_junction, b,junction, package_on, a,board_0, board_1, left_speed, right_speed, junction_no, parcel_num(), package_type(), package_received(), line_follow(),lost_line();
 bool sensor1[7], sensor2[7], junction_detected, package[10];
 void read_sensors_secondary(), dropoff_truck(), read_sensors(), turn_left(), turn_right(), turn_around(), rth(), dropoff(), pickup_package(), pickup();
-*/	
+	
 robot_link rlink;                      					// datatype for the robot link
 stopwatch watch;                       					// setup watch
 

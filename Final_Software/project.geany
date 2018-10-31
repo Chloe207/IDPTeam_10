@@ -6,8 +6,7 @@ description=1B IDP
 run_cmd=./Whole
 
 [files]
-current_page=0
-FILE_NAME_0=0;C++;0;EUTF-8;1;1;0;Whole.cc;0;4
+current_page=-1
 
 [indentation]
 indent_width=4
