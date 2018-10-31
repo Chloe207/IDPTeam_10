@@ -6,9 +6,7 @@ description=1B IDP
 run_cmd=./light_test
 
 [files]
-current_page=0
-FILE_NAME_0=429;C++;0;EUTF-8;1;1;0;%2Fhomes%2Fcmlc3%2FIDPTeam_10%2FSensor_testing%2Flight_test.cc;0;4
-FILE_NAME_1=637;C++;0;EUTF-8;1;1;0;%2Fhomes%2Fcmlc3%2FIDPTeam_10%2FSensor_testing%2Frobot.h;0;4
+current_page=-1
 
 [indentation]
 indent_width=4

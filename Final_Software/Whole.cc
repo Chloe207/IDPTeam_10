@@ -139,7 +139,7 @@ void turn_left()  {
     watch4.start();
 	rlink.command(MOTOR_1_GO, left_speed);
 	rlink.command(MOTOR_2_GO, left_speed*1.2);					// Rotate by 90 degrees to the left
-    while (watch4.read() < 2200) {
+    while (watch4.read() < 2250) {
 		;
     }
     watch4.stop();
@@ -167,7 +167,7 @@ void turn_right() {
     watch5.start();
 	rlink.command(MOTOR_1_GO, right_speed*1.2);
 	rlink.command(MOTOR_2_GO, right_speed);						// Rotate by 90 degrees to the right
-    while (watch5.read() < 1960) {
+    while (watch5.read() < 1920) {
 		;
     }
 	watch5.stop();
@@ -211,6 +211,7 @@ void dropoff()   {
 			else{
 				;
 			}
+		}
 		else {
 			b = 0;
 			lost_line_reverse();
@@ -228,8 +229,9 @@ void dropoff()   {
 	rlink.command(MOTOR_1_GO, 0);					    									
 	rlink.command(MOTOR_2_GO, 0);
 	delay(500);
-
+	cout << "dropoff turning left"<< endl;
 	turn_left();
+	cout << "Dropoff" << endl;
 	with_package = 1;
 	cout << "Package: " << with_package << endl;
 	line_follow();
@@ -290,22 +292,12 @@ void dropoff_truck() {
 	}
 
 	rlink.command(MOTOR_3_GO, 110);
-	while ((watch7.read() < 2600) && (watch7.read() > 100)) {
-		;
-	}
-
-	rlink.command(WRITE_PORT_1, 0);
-	while ((watch7.read() < 2700) && (watch7.read() > 2600)) {
-		;
-	}
-
-	rlink.command(MOTOR_3_GO, 238);
-	while ((watch7.read() < 5400) && (watch7.read() > 2700)) {
+	while ((watch7.read() < 2700) && (watch7.read() > 100)) {
 		;
 	}
 	watch7.stop();
 	delay(1000);
-	
+	cout << "here 1 " << endl;
 	watch7.start();
 	rlink.command(MOTOR_1_GO, right_speed);													// Line only detected in the middle
 	rlink.command(MOTOR_2_GO, left_speed);
@@ -313,7 +305,7 @@ void dropoff_truck() {
 		;
 	}
 	again1 = 0;
-	while ((watch7.read() < 1000) && (watch7.read() > 20)) {
+	while ((watch7.read() < 700) && (watch7.read() > 20)) {
 		read_sensors();
 		if ((sensor1[right] == 1) && (sensor1[left] == 1) && (sensor1[middle] == 1)) {
 			break;
@@ -322,19 +314,60 @@ void dropoff_truck() {
 			if (again1 == 0) {
 				b = 0;
 				rlink.command(MOTOR_1_GO, right_speed);					    				// Line only detected in the middle
-				rlink.command(MOTOR_2_GO, left_speed);
+				rlink.command(MOTOR_2_GO, left_speed*1.1);
 				again1 = 1;
 			}
 			else {
 				;
 			}
+		}
 		else {
 			b = 0;
 			lost_line_reverse();
 			again1 = 0;
 		}
-		}
+	}
+	watch7.start();
+	rlink.command(WRITE_PORT_1, 0);
+	while (watch7.read() < 100) {
+		;
+	}
+	rlink.command(MOTOR_3_GO, 238);
+	while ((watch7.read() > 100) && (watch7.read() < 2800)) {
+		;
+	}
+	watch7.stop();
+	
+	cout << " Finding path again" << endl;
+    rlink.command(MOTOR_1_GO, 0);								// Stop the robot and wait (stabilise)
+    rlink.command(MOTOR_2_GO, 0);
+    delay(300);                           						// Start the rotation to the left
+    
+    watch7.start();
+	rlink.command(MOTOR_1_GO, left_speed*2);
+	rlink.command(MOTOR_2_GO, right_speed*0.5);					// Rotate by 90 degrees to the left
+    while (watch7.read() < 800) {
+		;
+    }
+    watch7.stop();
+    
+    rlink.command(MOTOR_1_GO, 0);								// Stop the robot after the rotation has finished
+    rlink.command(MOTOR_2_GO, 0);
+    delay(300);
+        
+    watch7.start();
+	rlink.command(MOTOR_1_GO, left_speed);						// Move forward a little (this is needed otherwise lost_line() does not work)
+	rlink.command(MOTOR_2_GO, right_speed);
+    while (watch7.read() < 300) {
+		;
+    }
+    watch7.stop();
+    restart = 1;
+    line_follow();
+	
 }
+
+	
 
 void pickup_package() {
 	stopwatch watch8;
@@ -478,18 +511,33 @@ int line_follow() {
 				package_on = 1;
 				package[junction_no-1] = 0;
 			}
+		if (junction_no == 2) {
+			restart = 0;
+		}
 			
 		}
 	}
 	
-	if ((junction_no == 11) && (junction_detected == 1)) {
+	if ((junction_no == 13) && (junction_detected == 1) && (sensor1[back] == 1)) {
+		cout << "Restarting" << endl;
+		cout << "Restart turning left" << endl;
+		turn_left();
+		
+		restart = 0;
+		with_package = 0;
+		junction_no = 2;
+	}
+	
+	if ((junction_no == 11) && (junction_detected == 1) && (restart == 0)) {
 		cout << "calling drop off" << endl;
 		dropoff_truck();
 	}
 		
 	if (((sensor1[back] == 1) && (junction_no == 6) && (junction_detected == 1)) || ((sensor1[back] == 1) && (junction_no == 9) && (junction_detected == 1))) {
 		cout << "This is an angle" << endl;
+		cout << "Angle turning left" << endl;
 		turn_left();
+
 		junction_detected = 0;
 	}
 	
@@ -497,6 +545,7 @@ int line_follow() {
 		cout << "This junction has a package" << endl;
 		package_on = 1;
 		read_sensors_secondary();				// Check functionality of this part
+		package[junction_no] = 0;
 		pickup();
 	}
 
@@ -529,6 +578,7 @@ int main () {
 	
     junction_no = 0;									// Junction number									
 	junction_detected = 0;
+	again = 0;
     
     left_speed = 60;                                    // Rotation speed of motor 1(right)
     right_speed = 127 + left_speed;                     // Rotation speed of motor 2 to go straight (left)
@@ -536,11 +586,11 @@ int main () {
 
     
     for (int k = 0; k < 10; k++) {                      // All stations have packages
-		if (k==3) {
-			package[k] = 1;
+		if (k<3) {
+			package[k] = 0;
 		}
 		else {
-			package[k] = 0;
+			package[k] = 1;
 		}
     }
         
@@ -555,8 +605,8 @@ int main () {
     watch10.start();
     while (watch10.read() < 300000) {                      // loop while watch less than 5mins
 //		error();      
-        read_sensors();
-        with_package == 0;       
+
+        read_sensors();    
         //sensor1[front_switch] = -sensor1[front_switch]; // Invert switch input
         line_follow();
         
