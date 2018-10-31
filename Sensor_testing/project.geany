@@ -1,13 +1,12 @@
 [project]
-name=motor_testing
+name=a.out
 base_path=/homes/cmlc3/IDPTeam_10/Sensor_testing
 make_in_base_path=true
 description=1B IDP
-run_cmd=./motor_testing
+run_cmd=./a.out
 
 [files]
-current_page=0
-FILE_NAME_0=776;C++;0;EUTF-8;1;1;0;motor_testing.cc;0;4
+current_page=-1
 
 [indentation]
 indent_width=4

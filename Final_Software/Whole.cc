@@ -1,60 +1,36 @@
-#include <iostream>
-#include <robot_instr.h>
-#include <robot_link.h>
-#include <stdlib.h>     //for using the function sleep
-#include <stdio.h>
-#include <time.h>
-#include <unistd.h>
-#include <stopwatch.h>
-#include <robot_delay.h>
-#include <cmath>
+#include "robot.h"
 
-using namespace std;
 
-#define ROBOT_NUM 14   // The id number (see below)
-
-// Board_0 pin allocations
-#define middle 0
-#define left 1
-#define back 2
-#define right 3
-#define white_LED 16  // Value to write white LED
-#define blue_LED 32   // Value to write blue LED
-#define front_switch 6
-
-// Board_1 pin allocations
-#define multi_parcel 8
-#define delivery_indicator 16
-#define lift_actuator 32
-#define push_actuator 64
-
-// Package indicators
-#define RED 1
-#define GREEN 2
-#define WHITE 3
-#define WOOD 4
-#define TRANSPARENT 5
-
-// ADC allocations
-#define light_sensor ADC4
-#define dist_sensor ADC3
-
-#define ramp_speed 255
-
-int with_package, lost_line_reverse(),back_junction, b,junction, package_on, a,board_0, board_1, left_speed, right_speed, junction_no, parcel_num(), package_type(), package_received(), line_follow(),lost_line();
-bool sensor1[7], sensor2[7], junction_detected, package[10];
-void read_sensors_secondary(), dropoff_truck(), read_sensors(), turn_left(), turn_right(), turn_around(), rth(), dropoff(), pickup_package(), pickup();
-	
-robot_link rlink;                      					// datatype for the robot link
-stopwatch watch;                       					// setup watch
-
+int package_type() {
+	int val_white, val_blue;
+    
+    cout << "Determining package colour" << endl;
+    
+    rlink.command(WRITE_PORT_0, white_LED);                 // Turn on white LED
+    delay(100);
+    val_white = rlink.request(light_sensor);        // Read sensor
+    delay(100);
+    rlink.command(WRITE_PORT_0, 0);                 // Turn off white LED
+    
+    delay(100);
+    rlink.command(WRITE_PORT_0, blue_LED);                 // Turn on blue LED
+    delay(100);
+    val_blue = rlink.request(light_sensor);         // Read sensor
+    delay(100);
+    rlink.command(WRITE_PORT_0, 0);                 // Turn off blue LED
+    
+    cout << "White: " << val_white << endl;
+    cout << "Blue: " << val_blue << endl;
+    return 0;
+}
 void turn_around(void)  {
-    watch.start();
-    while (watch.read() < 3640) {
+	stopwatch watch1;
+    watch1.start();
+    while (watch1.read() < 3640) {
 		rlink.command(MOTOR_1_GO, left_speed);
         rlink.command(MOTOR_2_GO, left_speed*1.2);                                 // Rotate 180 degrees
     }
-    watch.stop();
+    watch1.stop();
 }
 
 void rth(void)  {
@@ -76,8 +52,9 @@ void read_sensors_secondary() {
 }
 
 int lost_line () {
-    watch.start();
-    if (watch.read() < 200) {														// For 200ms, if line is lost, rotate to the left
+	stopwatch watch2;
+    watch2.start();
+    if (watch2.read() < 200) {														// For 200ms, if line is lost, rotate to the left
 		if (sensor1[middle] == 1) {
 			return 0;
 		}
@@ -88,31 +65,36 @@ int lost_line () {
 		}
 	}
 	
-    if ((watch.read() < 400) && (watch.read() > 200)) {								// If the above does not work, rotate back in for 200ms and rotate right for 200ms
+    if ((watch2.read() < 400) && (watch2.read() > 200)) {								// If the above does not work, rotate back in for 200ms and rotate right for 200ms
 		if (sensor1[middle] == 1) {
 			return 0;
 		}
 		else {
 			rlink.command(MOTOR_1_GO, left_speed * 0.8);
 			rlink.command(MOTOR_2_GO, right_speed);			 	        			// Rotate to the right
+			delay(0.1);
 		}
 	}
     
-	if ((watch.read() < 800) && (watch.read() > 400)) { 							// For 400ms try moving backwards
+	if ((watch2.read() < 800) && (watch2.read() > 400)) { 							// For 400ms try moving backwards
 		if (sensor1[middle] == 1) {
 				return 0;
 		}
 		else {
 			rlink.command(MOTOR_1_GO, right_speed);
 			rlink.command(MOTOR_2_GO, left_speed);			 						// Reverse
+			delay(0.1);
 		}
 	}
+	watch2.stop();
 	return 0;
 }
 
 int lost_line_reverse() {
-    watch.start();
-    if (watch.read() < 200) {														// For 200ms, if line is lost, rotate to the left
+	stopwatch watch3;
+	
+    watch3.start();
+    if (watch3.read() < 200) {														// For 200ms, if line is lost, rotate to the left
 		if (sensor1[middle] == 1) {
 			return 0;
 		}
@@ -123,7 +105,7 @@ int lost_line_reverse() {
 		}
 	}
 	
-    if ((watch.read() < 400) && (watch.read() > 200)) {								// If the above does not work, rotate back in for 200ms and rotate right for 200ms
+    if ((watch3.read() < 400) && (watch3.read() > 200)) {								// If the above does not work, rotate back in for 200ms and rotate right for 200ms
 		if (sensor1[middle] == 1) {
 			return 0;
 		}
@@ -133,7 +115,7 @@ int lost_line_reverse() {
 		}
 	}
     
-	if ((watch.read() < 800) && (watch.read() > 400)) { 							// For 400ms try moving backwards
+	if ((watch3.read() < 800) && (watch3.read() > 400)) { 							// For 400ms try moving backwards
 		if (sensor1[middle] == 1) {
 				return 0;
 		}
@@ -142,68 +124,72 @@ int lost_line_reverse() {
 			rlink.command(MOTOR_2_GO, right_speed);			 						// Reverse
 		}
 	}
+	watch3.stop();
 	return 0;
 }
 
 void turn_left()  {
+	stopwatch watch4;
 	cout << " Turning left" << endl;
     rlink.command(MOTOR_1_GO, 0);                                        			// Stop the robot and wait (stabilise)
     rlink.command(MOTOR_2_GO, 0);
     delay(300);                           						// Start the rotation to the left
     
-    watch.start();
-    while (watch.read() < 2200) {
+    watch4.start();
+    while (watch4.read() < 2200) {
         rlink.command(MOTOR_1_GO, left_speed);
         rlink.command(MOTOR_2_GO, left_speed*1.2);                                 	// Rotate by 90 degrees to the left
         delay(0.1);
     }
-    watch.stop();
+    watch4.stop();
     
     rlink.command(MOTOR_1_GO, 0);                                       			// Stop the robot after the rotation has finished
     rlink.command(MOTOR_2_GO, 0);
     delay(300);
         
-    watch.start();
-    while (watch.read() < 300) {
+    watch4.start();
+    while (watch4.read() < 300) {
         rlink.command(MOTOR_1_GO, left_speed);                                		// Move forward a little (this is needed otherwise lost_line() does not work)
         rlink.command(MOTOR_2_GO, right_speed);
         delay(0.1);
     }
-    watch.stop();
+    watch4.stop();
 }
 
 void turn_right() {
+	stopwatch watch5;
 	cout << "Turning right" << endl;
     rlink.command(MOTOR_1_GO, 0);                                        			// Stop the robot and wait (stabilise)
     rlink.command(MOTOR_2_GO, 0);
     delay(300);                       					// Start the rotation to the right
     
-    watch.start();
-    while (watch.read() < 1920) {
+    watch5.start();
+    while (watch5.read() < 1940) {
         rlink.command(MOTOR_1_GO, right_speed*1.2);
         rlink.command(MOTOR_2_GO, right_speed);                                 	// Rotate by 90 degrees to the right
         delay(0.1);
     }
-    watch.stop();
+    watch5.stop();
     rlink.command(MOTOR_1_GO, 0);                                        			// Stop the robot
     rlink.command(MOTOR_2_GO, 0);
     delay(300);
  
-    watch.start();   
-    while (watch.read() < 300) {
+    watch5.start();   
+    while (watch5.read() < 300) {
         rlink.command(MOTOR_1_GO, left_speed);                                		// Move forward a little (this is needed otherwise lost_line() does not work)
         rlink.command(MOTOR_2_GO, right_speed);
         delay(0.1);
     } 
-    watch.stop();
+    watch5.stop();
     package_on = 0;
 }
 
 void dropoff()   {
-	watch.start();
-	while (watch.read() < 1000) {
+	stopwatch watch6;
+	watch6.start();
+	while (watch6.read() < 1000) {
 		read_sensors();
-		if (watch.read() < 20) {
+		if (watch6.read() < 20) {
 			rlink.command(MOTOR_1_GO, right_speed);					    				// Line only detected in the middle
 			rlink.command(MOTOR_2_GO, left_speed);
 		}
@@ -226,6 +212,7 @@ void dropoff()   {
 			}
 		}
 	}
+	watch6.stop();
 	rlink.command(MOTOR_1_GO, 0);					    				// Line only detected in the middle
 	rlink.command(MOTOR_2_GO, 0);
 	delay(500);
@@ -236,20 +223,24 @@ void dropoff()   {
 }
 
 void dropoff_truck() {
+	stopwatch watch7;
+	cout << "stopping" << endl;
 	rlink.command(MOTOR_1_GO, 0);                        		// Stop the robot
 	rlink.command(MOTOR_2_GO, 0);
-	delay(500);	
-	watch.start();
-	while (watch.read() < 300) { 
+	delay(1000);	
+	watch7.start();
+	cout << "Approaching truck" << endl;
+	while (watch7.read() < 300) { 
 		rlink.command(MOTOR_1_GO, left_speed);                  // Stop the robot
 		rlink.command(MOTOR_2_GO, right_speed);	
 		delay(0.1);
 	}
-	watch.stop();
-	watch.start();
-	while (watch.read() < 800) {
+	watch7.stop();
+	watch7.start();
+	while (watch7.read() < 1000) {
 		read_sensors();
 		if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {
+			cout << "Adjusting approach" << endl;
 			lost_line();
 		}
 		else { 
@@ -257,69 +248,97 @@ void dropoff_truck() {
 			rlink.command(MOTOR_2_GO, right_speed);	
 		}
 	}
-	watch.stop();
+	watch7.stop();
 	rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
 	rlink.command(MOTOR_2_GO, 0);
-}
-
-void pickup_package() {
-	delay(500);
-	watch.start();
-	while (watch.read() < 2500) {
+	delay(1);
+	watch7.start();
+	while (watch7.read() < 100)  {
+		cout << "Arm extended" << endl;
+		rlink.command(WRITE_PORT_1, push_actuator+lift_actuator);     // Push actuator forward whilst remaining up
+		delay(0.1);
+	}
+	while ((watch7.read() < 2600) && (watch7.read() > 100)) {
 		rlink.command(MOTOR_3_GO, 110);
 		delay(0.1);
 	}
-	while ((watch.read() < 2700) && (watch.read() > 2500))  {
+	while ((watch7.read() < 2700) && (watch7.read() > 2600)) {
+		rlink.command(WRITE_PORT_1, 0);
+		delay(0.1);
+	}
+	while ((watch7.read() < 5400) && (watch7.read() > 2700)) {
+		rlink.command(MOTOR_3_GO, 238);
+		delay(0.1);
+	}
+	delay(2000);
+}
+
+void pickup_package() {
+	stopwatch watch8;
+	delay(500);
+	watch8.stop();
+	watch8.start();
+	while (watch8.read() < 2500) {
+		rlink.command(MOTOR_3_GO, 110);
+		delay(0.1);
+	}
+	while ((watch8.read() < 2700) && (watch8.read() > 2500))  {
+		cout << "Arm extended" << endl;
 		rlink.command(WRITE_PORT_1, push_actuator+lift_actuator);     // Push actuator forward whilst remaining up
 		delay(0.1);
     }
     delay(2000);
-    while ((watch.read() < 5400)&&(watch.read() > 2700)) {
+    while ((watch8.read() < 5400)&&(watch8.read() > 2700)) {
 		rlink.command(MOTOR_3_GO, 238);
 		delay(0.1);
 	}
-	watch.stop();
+	watch8.stop();
     rlink.command(WRITE_PORT_1, 0);                 // Pull back while down
     delay(500);
     
     cout << "Picked up package" << endl;
     delay(500);
     back_junction = 0;
+    package_type();
     dropoff();
 }
 
 void pickup() {
+	stopwatch watch9;
 	cout << package_on << endl;
 	if (package_on == 1) {
 		turn_right();
 		rlink.command(MOTOR_1_GO, 0);                        		// Stop the robot
 		rlink.command(MOTOR_2_GO, 0);
 		delay(500);	
-		watch.start();
-		while (watch.read() < 300) { 
-			cout << "pickup 1 "<< endl;
-			rlink.command(MOTOR_1_GO, left_speed);                  // Stop the robot
-			rlink.command(MOTOR_2_GO, right_speed);	
-			delay(0.1);
+		watch9.start();
+		rlink.command(MOTOR_1_GO, left_speed);                  // Stop the robot
+		rlink.command(MOTOR_2_GO, right_speed);	
+		while (watch9.read() < 300) { 
+			//cout << "pickup 1 "<< endl;	
+			;
 		}
-		watch.stop();
-		watch.start();
-		while (watch.read() < 1000) {
-			cout << "pickup 2 " << endl;
+		watch9.stop();
+		cout << "start stopwatch" << endl;
+		watch9.start();
+		
+		while (watch9.read() < 1200) {
+			cout << watch.read() << endl;
+			//cout << "pickup 2 " << endl;
 			read_sensors();
 			if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {
 				lost_line();
-			}
-			else { 
 				rlink.command(MOTOR_1_GO, left_speed);                        
 				rlink.command(MOTOR_2_GO, right_speed);	
+				//cout << "Correcting itself" << endl;
 			}
 		}
-		watch.stop();
+		watch9.stop();
 		cout << "Stop motors" << endl;
 		rlink.command(MOTOR_1_GO, 0);                        // Stop the robot
 		rlink.command(MOTOR_2_GO, 0);
 	}
+	
 	package_on = 0;
 	pickup_package();  	
 }
@@ -327,47 +346,64 @@ void pickup() {
 
 int line_follow() {
 	if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 1)) {	
-		//cout << "Middle" << endl;	
-		a = 0;
-		rlink.command(MOTOR_1_GO, left_speed);					    				// Line only detected in the middle
-		rlink.command(MOTOR_2_GO, right_speed);
+		if (again == 1) {
+			delay(0.1);
+		}
+		else {
+			//cout << "Middle" << endl;	
+			a = 0;
+			again = 1;
+			rlink.command(MOTOR_1_GO, left_speed);					    				// Line only detected in the middle
+			rlink.command(MOTOR_2_GO, right_speed);
+			delay(0.1);
+		}
 	}
 			
 	if ((sensor1[right] == 1) && (sensor1[left] == 0) && (sensor1[middle] == 1)) {
 		//cout << "Right" << endl;
 		a = 0;
+		again = 0;
 		rlink.command(MOTOR_1_GO, left_speed);				    					// Line detected on the right i.e. robot going left
 		rlink.command(MOTOR_2_GO, 127 + left_speed * 1.80);
+		delay(0.1);
 	}
 			 
 	if ((sensor1[right] == 1) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {
 		//cout << "Very right" << endl;
 		a = 0;
+		again = 0;
 		rlink.command(MOTOR_1_GO, left_speed);			    						// Line only detected on the right i.e. robot has strongly deviated to the left
 		rlink.command(MOTOR_2_GO, 127 + left_speed * 2.00);
+		delay(0.1);
 	}		
 		 
 	if ((sensor1[right] == 0) && (sensor1[left] == 1) && (sensor1[middle] == 1)) {
 		//cout << "Left" << endl;
 		a = 0;
+		again = 0;
 		rlink.command(MOTOR_1_GO, left_speed * 1.80);			    				// Line detected on the left i.e. robot going right
 		rlink.command(MOTOR_2_GO, right_speed);
+		delay(0.1);
 	}
 
 	if ((sensor1[right] == 0) && (sensor1[left] == 1) && (sensor1[middle] == 0)) {
 		//cout << "Very left" << endl;
 		a = 0;
+		again = 0;
 		rlink.command(MOTOR_1_GO, left_speed * 2.00);			    				// Line only detected on the left i.e. robot has stongly deviated to the right
 		rlink.command(MOTOR_2_GO, right_speed);
+		delay(0.1);
 	}
 		
 	if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {					// Line lost
 		//cout << "Lost" << endl;
 		a = 0;
+		again = 0;
 		lost_line();
 	}
 		
 	if ((sensor1[right] == 1) && (sensor1[left] == 1) && (sensor1[middle] == 1)) {
+		again = 0;
 		if ((a == 0) && (package_on == 0)) {
 			junction_no = junction_no + 1;				    	// Robot is going over a junction
             cout << "Junction" << junction_no <<endl;
@@ -382,12 +418,12 @@ int line_follow() {
 		}
 	}
 	
-	if ((junction_no == 16) && (junction_detected == 1)) {
+	if ((junction_no == 11) && (junction_detected == 1)) {
 		cout << "calling drop off" << endl;
-		dropoff();
+		dropoff_truck();
 	}
 		
-	if (((sensor1[back] == 1) && (junction_no == 6) && (junction_detected == 1)) || ((sensor1[back] == 1) && (junction_no == 12) && (junction_detected== 1)) || ((sensor1[back] == 1) && (junction_no == 13) && (junction_detected == 1))) {
+	if (((sensor1[back] == 1) && (junction_no == 6) && (junction_detected == 1)) || ((sensor1[back] == 1) && (junction_no == 9) && (junction_detected == 1))) {
 		cout << "This is an angle" << endl;
 		turn_left();
 		junction_detected = 0;
@@ -425,6 +461,8 @@ int parcel_num(int) {
 	
 
 int main () {
+	stopwatch watch10;
+	
     junction_no = 0;									// Junction number									
 	junction_detected = 0;
     
@@ -450,12 +488,9 @@ int main () {
     
     rlink.command(WRITE_PORT_1, 0);
     rlink.command(WRITE_PORT_0, 0);
-    
-    for (int t=1; t< 300; t = t+1) {                      // loop while watch less than 5mins
+    watch10.start();
+    while (watch10.read() < 300000) {                      // loop while watch less than 5mins
 //		error();      
-		cout << watch.read() << endl;
-		watch.stop();
-		watch.start();
         read_sensors();
         with_package == 0;       
         //sensor1[front_switch] = -sensor1[front_switch]; // Invert switch input
