@@ -230,14 +230,14 @@ void dropoff_truck() {
 	delay(1000);	
 	watch7.start();
 	cout << "Approaching truck" << endl;
-	while (watch7.read() < 300) { 
+	while (watch7.read() < 400) { 
 		rlink.command(MOTOR_1_GO, left_speed);                  // Stop the robot
 		rlink.command(MOTOR_2_GO, right_speed);	
 		delay(0.1);
 	}
 	watch7.stop();
 	watch7.start();
-	while (watch7.read() < 1000) {
+	while (watch7.read() < 1500) {
 		read_sensors();
 		if ((sensor1[right] == 0) && (sensor1[left] == 0) && (sensor1[middle] == 0)) {
 			cout << "Adjusting approach" << endl;
