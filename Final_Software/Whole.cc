@@ -8,19 +8,48 @@ int package_type() {
     
     rlink.command(WRITE_PORT_0, white_LED);                 // Turn on white LED
     delay(100);
-    val_white = rlink.request(light_sensor);        // Read sensor
+    val_white = rlink.request(light_sensor);                // Read sensor
     delay(100);
-    rlink.command(WRITE_PORT_0, 0);                 // Turn off white LED
+    rlink.command(WRITE_PORT_0, LED_off);                   // Turn off white LED
     
     delay(100);
     rlink.command(WRITE_PORT_0, blue_LED);                 // Turn on blue LED
     delay(100);
-    val_blue = rlink.request(light_sensor);         // Read sensor
+    val_blue = rlink.request(light_sensor);                // Read sensor
     delay(100);
-    rlink.command(WRITE_PORT_0, 0);                 // Turn off blue LED
+    rlink.command(WRITE_PORT_0, LED_off);                 // Turn off blue LED
     
     cout << "White: " << val_white << endl;
     cout << "Blue: " << val_blue << endl;
+    
+    
+    // Threshold values need to be tested and set - should be able to get these with light_test.cc
+    // Also includes delivery_point bool so delivery point can be set
+    // Green
+    if((0 < val_white < 30) && (0 < val_blue < 30)) {
+        rlink.command(WRITE_PORT_1, GREEN + multi_parcel + d2);
+        delivery_point = 1;
+    }
+    // Red
+    if((31 < val_white < 60) && (31 < val_blue < 60)){
+        rlink.command(WRITE_PORT_1, RED + multi_parcel + d2);
+        delivery_point = 1;
+    }
+    // Wood
+    if((61 < val_white < 90) && (61 < val_blue 90)) {
+        rlink.command(WRITE_PORT_1, WOOD + multi_parcel);
+        delivery_point = 0;
+    }
+    // White
+    if((91 < val_white < 120) && (91 < val_blue 120)) {
+        rlink.command(WRITE_PORT_1, WHITE + multi_parcel + d2);
+        delivery_point = 1;
+    }
+    // Transparent
+    if((121 < val_white < 150) && (121 < val_blue 150)) {
+        rlink.command(WRITE_PORT_1, TRANSPARENT + multi_parcel);
+        delivery_point = 0;
+    }
     return 0;
 }
 void turn_around(void)  {
