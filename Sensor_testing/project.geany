@@ -1,9 +1,9 @@
 [project]
-name=a.out
+name=light_test
 base_path=/homes/cmlc3/IDPTeam_10/Sensor_testing
 make_in_base_path=true
 description=1B IDP
-run_cmd=./a.out
+run_cmd=./light_test
 
 [files]
 current_page=-1
