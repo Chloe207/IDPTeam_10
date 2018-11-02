@@ -3,58 +3,75 @@
 
 int package_type() {
     int val_white, val_blue;
-
+	stopwatch watch12;
+	
+    
     cout << "Determining package colour" << endl;
-    
-    rlink.command(WRITE_PORT_0, white_LED);                 // Turn on white LED
-    delay(500);
-    val_white = rlink.request(light_sensor);                // Read sensor
-    delay(500);
-    rlink.command(WRITE_PORT_0, LED_off);                   // Turn off white LED
-    
-    delay(500);
-    rlink.command(WRITE_PORT_0, blue_LED);                 // Turn on blue LED
-    delay(500);
-    val_blue = rlink.request(light_sensor);                // Read sensor
-    delay(500);
-    rlink.command(WRITE_PORT_0, LED_off);                 // Turn off blue LED
-    
-    cout << "White: " << val_white << endl;
-    cout << "Blue: " << val_blue << endl;
-    
-    
-    // Threshold values need to be tested and set - should be able to get these with light_test.cc
-    // Also includes delivery_point bool so delivery point can be set
-    // Green
-    if((val_white > 0) && (val_white < 30) && (val_blue < 30) && (val_blue > 0)) {
-        rlink.command(WRITE_PORT_1, GREEN + multi_parcel + d2);
-        delivery_point = 1;
-        cout << "Package is green" << endl;
-    }
-    // Red
-    if((val_white < 60) && (val_white > 31) && (val_blue < 60) && (val_blue > 31)){
-        rlink.command(WRITE_PORT_1, RED + multi_parcel + d2);
-        delivery_point = 1;
-        cout << "Package is red" << endl;
-    }
-    // Wood
-    if((val_white > 61) && (val_white < 90) && (val_blue < 90) && (val_blue > 61)) {
-        rlink.command(WRITE_PORT_1, WOOD + multi_parcel);
-        delivery_point = 0;
-        cout << "Package is wood" << endl;
-    }
-    // White
-    if((val_white < 120) && (val_white > 91) && (val_blue < 120) && (val_blue > 91)) {
-        rlink.command(WRITE_PORT_1, WHITE + multi_parcel + d2);
-        delivery_point = 1;
-        cout << "Package is white" << endl;
-    }
-    // Transparent
-    if((val_white < 150) && (val_white > 121) && (val_blue < 150) && (val_blue > 121)) {
-        rlink.command(WRITE_PORT_1, TRANSPARENT + multi_parcel);
-        delivery_point = 0;
-        cout << "Package is transparent" << endl;
-    }
+    watch12.start();
+    for (int t=0; t<3; t++) {
+		rlink.command(WRITE_PORT_0, white_LED);                 // Turn on white LED
+		delay(200);
+		val_white = rlink.request(light_sensor);                // Read sensor
+		delay(200);
+		rlink.command(WRITE_PORT_0, LED_off);                   // Turn off white LED
+		
+		delay(200);
+		rlink.command(WRITE_PORT_0, blue_LED);                 // Turn on blue LED
+		delay(200);
+		val_blue = rlink.request(light_sensor);                // Read sensor
+		delay(200);
+		rlink.command(WRITE_PORT_0, LED_off);                 // Turn off blue LED
+		
+		cout << "White: " << val_white << endl;
+		cout << "Blue: " << val_blue << endl;
+		
+		
+		// Threshold values need to be tested and set - should be able to get these with light_test.cc
+		// Also includes delivery_point bool so delivery point can be set
+
+		
+		// Red
+		if((val_white < 123) && (val_white > 118) && (val_blue < 31) && (val_blue > 29)){
+			rlink.command(WRITE_PORT_1, RED + multi_parcel + d2);
+			delivery_point = 1;
+			cout << "Package is red" << endl;
+			return 0;
+		}
+
+
+		// Transparent
+		if((val_white < 131) && (val_white > 125) && (val_blue < 53) && (val_blue > 50)) {
+			rlink.command(WRITE_PORT_1, TRANSPARENT + multi_parcel);
+			delivery_point = 0;
+			cout << "Package is transparent" << endl;
+			return 0;
+		}
+		
+		// White
+		if((val_white < 131) && (val_white > 121) && (val_blue < 53) && (val_blue > 42)) {
+			rlink.command(WRITE_PORT_1, WHITE + multi_parcel + d2);
+			delivery_point = 1;
+			cout << "Package is white" << endl;
+			return 0;
+		}
+		
+		
+		// Green
+		if((val_white > 119) && (val_white < 125) && (val_blue < 46) && (val_blue > 32)) {
+			rlink.command(WRITE_PORT_1, GREEN + multi_parcel + d2);
+			delivery_point = 1;
+			cout << "Package is green" << endl;
+			return 0;
+		}
+		
+		// Wood
+		if((val_white > 100) && (val_white < 145) && (val_blue < 85) && (val_blue > 41)) {
+			rlink.command(WRITE_PORT_1, WOOD + multi_parcel);
+			delivery_point = 0;
+			cout << "Package is wood" << endl;
+			return 0;
+		}
+	}
     return 0;
 }
 
@@ -520,7 +537,7 @@ int line_follow() {
         a = 0;
         again = 0;
         rlink.command(MOTOR_1_GO, left_speed);                                        // Line detected on the right i.e. robot going left
-        rlink.command(MOTOR_2_GO, 127 + left_speed * 1.80);
+        rlink.command(MOTOR_2_GO, 127 + left_speed * 1.20);
         delay(0.1);
     }
              
@@ -529,7 +546,7 @@ int line_follow() {
         a = 0;
         again = 0;
         rlink.command(MOTOR_1_GO, left_speed);                                        // Line only detected on the right i.e. robot has strongly deviated to the left
-        rlink.command(MOTOR_2_GO, 127 + left_speed * 2.00);
+        rlink.command(MOTOR_2_GO, 127 + left_speed * 1.30);
         delay(0.1);
     }        
          
@@ -537,7 +554,7 @@ int line_follow() {
         //cout << "Left" << endl;
         a = 0;
         again = 0;
-        rlink.command(MOTOR_1_GO, left_speed * 1.80);                                // Line detected on the left i.e. robot going right
+        rlink.command(MOTOR_1_GO, left_speed * 1.20);                                // Line detected on the left i.e. robot going right
         rlink.command(MOTOR_2_GO, right_speed);
         delay(0.1);
     }
@@ -546,7 +563,7 @@ int line_follow() {
         //cout << "Very left" << endl;
         a = 0;
         again = 0;
-        rlink.command(MOTOR_1_GO, left_speed * 2.00);                                // Line only detected on the left i.e. robot has stongly deviated to the right
+        rlink.command(MOTOR_1_GO, left_speed * 1.30);                                // Line only detected on the left i.e. robot has stongly deviated to the right
         rlink.command(MOTOR_2_GO, right_speed);
         delay(0.1);
     }
@@ -639,7 +656,7 @@ int main () {
     junction_detected = 0;
     again = 0;
     
-    left_speed = 60;                                    // Rotation speed of motor 1(right)
+    left_speed = 90;                                    // Rotation speed of motor 1(right)
     right_speed = 127 + left_speed;                     // Rotation speed of motor 2 to go straight (left)
     rlink.command (RAMP_TIME, ramp_speed);
 
@@ -658,13 +675,12 @@ int main () {
         rlink.print_errs("  ");
         return -1;
     }
-    
+
     rlink.command(WRITE_PORT_1, 0);
     rlink.command(WRITE_PORT_0, 0);
     watch10.start();
     while (watch10.read() < 300000) {                      // loop while watch less than 5mins
-//        error();      
-
+//        error();    
         read_sensors();    
         //sensor1[front_switch] = -sensor1[front_switch]; // Invert switch input
         line_follow();
