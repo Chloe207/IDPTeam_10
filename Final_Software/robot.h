@@ -50,11 +50,3 @@ void read_sensors_secondary(), dropoff_truck(), read_sensors(), turn_left(), tur
 	
 robot_link rlink;                      					// datatype for the robot link
 stopwatch watch10;                       					// setup watch
-
-/*
-extern int a,board_0, board_1, left_speed, right_speed, junction_no, parcel_num(), package_type(), package_received(), line_follow(), pickup(),lost_line(), pickup_package();
-extern bool sensor1[7], sensor2[7], junction_detected, package[10];
-extern void turn_left(), turn_right(), turn_around(), rth(), junction(), dropoff();
-extern robot_link rlink;
-extern stopwatch watch;
-*/
